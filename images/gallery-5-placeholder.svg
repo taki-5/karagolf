@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="自慢のフードメニュー(仮イラスト・実写真差し替え予定)">
+  <defs>
+    <linearGradient id="roomg5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#221a10"/>
+      <stop offset="100%" stop-color="#0b0b0c"/>
+    </linearGradient>
+    <radialGradient id="glowg5" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f2c94c" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#f2c94c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowRedg5" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8382b" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#e8382b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#roomg5)"/>
+  <ellipse cx="400" cy="280" rx="260" ry="150" fill="url(#glowg5)" opacity="0.6"/>
+
+  <!-- 木のボード -->
+  <ellipse cx="400" cy="330" rx="260" ry="70" fill="#3a2c1a" stroke="#5a4526" stroke-width="3"/>
+  <ellipse cx="400" cy="330" rx="230" ry="56" fill="#2a2014"/>
+
+  <!-- 串焼き -->
+  <g stroke="#c99a35" stroke-width="4" stroke-linecap="round">
+    <line x1="230" y1="320" x2="330" y2="300"/>
+  </g>
+  <g fill="#b5652f" stroke="#4a2f18" stroke-width="1.5">
+    <circle cx="252" cy="315" r="14"/>
+    <circle cx="282" cy="308" r="14"/>
+    <circle cx="312" cy="302" r="14"/>
+  </g>
+
+  <!-- フライドポテト -->
+  <path d="M420,340 L470,340 L462,270 L428,270 Z" fill="#e8382b"/>
+  <g stroke="#f2d675" stroke-width="6" stroke-linecap="round">
+    <line x1="432" y1="272" x2="425" y2="330"/>
+    <line x1="445" y1="268" x2="445" y2="330"/>
+    <line x1="458" y1="272" x2="462" y2="330"/>
+  </g>
+
+  <!-- ドリンク -->
+  <g stroke="#f2c94c" stroke-width="3" fill="none">
+    <path d="M540,270 L600,270 L590,340 L550,340 Z"/>
+  </g>
+  <rect x="546" y="276" width="48" height="30" fill="#f2c94c" opacity="0.5"/>
+  <line x1="565" y1="250" x2="575" y2="278" stroke="#3aa655" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- 湯気/香りの演出 -->
+  <g stroke="#f2e6cf" stroke-width="2" fill="none" opacity="0.5">
+    <path d="M270,260 C265,245 280,240 275,225"/>
+    <path d="M300,255 C295,240 310,235 305,220"/>
+  </g>
+</svg>

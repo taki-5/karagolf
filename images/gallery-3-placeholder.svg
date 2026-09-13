@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="グラスを合わせる乾杯の瞬間(仮イラスト・実写真差し替え予定)">
+  <defs>
+    <linearGradient id="roomg3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#221a10"/>
+      <stop offset="100%" stop-color="#0b0b0c"/>
+    </linearGradient>
+    <radialGradient id="glowg3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f2c94c" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#f2c94c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowRedg3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8382b" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#e8382b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#roomg3)"/>
+  <ellipse cx="400" cy="260" rx="240" ry="170" fill="url(#glowg3)" opacity="0.85"/>
+
+  <!-- 左のグラス(ワイン) -->
+  <g stroke="#f2c94c" stroke-width="3" fill="none">
+    <path d="M300,180 C300,230 260,240 260,280 C260,310 285,330 315,330 C345,330 370,310 370,280 C370,240 330,230 330,180 Z"/>
+    <line x1="315" y1="330" x2="315" y2="400"/>
+    <line x1="280" y1="410" x2="350" y2="410"/>
+  </g>
+  <path d="M270,220 C270,255 290,275 315,275 C340,275 360,255 360,220 C360,240 340,255 315,255 C290,255 270,240 270,220 Z" fill="#b83a2e" opacity="0.85"/>
+
+  <!-- 右のグラス(カクテル) -->
+  <g stroke="#f2c94c" stroke-width="3" fill="none">
+    <path d="M430,190 L560,190 L500,300 Z"/>
+    <line x1="500" y1="300" x2="500" y2="400"/>
+    <line x1="465" y1="410" x2="535" y2="410"/>
+  </g>
+  <path d="M448,205 L542,205 L500,282 Z" fill="#f2c94c" opacity="0.75"/>
+  <circle cx="512" cy="260" r="9" fill="#3aa655"/>
+
+  <!-- ぶつかる瞬間の光の弾け -->
+  <g fill="#f2e6cf">
+    <circle cx="400" cy="245" r="6"/>
+    <circle cx="378" cy="220" r="3"/>
+    <circle cx="420" cy="215" r="3"/>
+    <circle cx="392" cy="270" r="3"/>
+    <circle cx="415" cy="260" r="2.5"/>
+  </g>
+  <g stroke="#f2e6cf" stroke-width="2" opacity="0.8">
+    <line x1="400" y1="245" x2="380" y2="200"/>
+    <line x1="400" y1="245" x2="425" y2="195"/>
+    <line x1="400" y1="245" x2="360" y2="250"/>
+    <line x1="400" y1="245" x2="440" y2="250"/>
+  </g>
+</svg>

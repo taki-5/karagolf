@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="仲間との集合写真(仮イラスト・実写真差し替え予定)">
+  <defs>
+    <linearGradient id="roomg4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#221a10"/>
+      <stop offset="100%" stop-color="#0b0b0c"/>
+    </linearGradient>
+    <radialGradient id="glowg4" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f2c94c" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#f2c94c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowRedg4" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8382b" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#e8382b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#roomg4)"/>
+  <ellipse cx="400" cy="320" rx="300" ry="170" fill="url(#glowg4)" opacity="0.75"/>
+
+  <!-- 天井の電飾ライト -->
+  <path d="M60,60 Q400,150 740,60" fill="none" stroke="#5a4526" stroke-width="2"/>
+  <g fill="#f2c94c">
+    <circle cx="120" cy="80" r="4"/><circle cx="220" cy="112" r="4"/><circle cx="320" cy="132" r="4"/>
+    <circle cx="420" cy="138" r="4"/><circle cx="520" cy="128" r="4"/><circle cx="620" cy="102" r="4"/><circle cx="700" cy="75" r="4"/>
+  </g>
+
+  <g fill="#0a0805" stroke="#f2c94c" stroke-width="1.5">
+    <circle cx="220" cy="290" r="24"/>
+    <path d="M192,318 C188,352 190,392 200,428 L246,428 C254,392 254,352 250,318 C230,306 208,306 192,318 Z"/>
+
+    <circle cx="330" cy="265" r="27"/>
+    <path d="M298,296 C293,336 296,382 308,424 L358,424 C368,382 368,336 362,296 C340,282 316,282 298,296 Z"/>
+
+    <circle cx="450" cy="255" r="30"/>
+    <path d="M414,290 C408,334 411,384 425,430 L480,430 C492,384 490,334 483,290 C458,275 432,275 414,290 Z"/>
+
+    <circle cx="565" cy="266" r="27"/>
+    <path d="M534,297 C529,336 531,382 543,424 L592,424 C602,382 601,336 596,297 C574,283 552,283 534,297 Z"/>
+
+    <circle cx="668" cy="290" r="24"/>
+    <path d="M640,318 C636,352 638,392 648,428 L694,428 C702,392 702,352 698,318 C678,306 656,306 640,318 Z"/>
+
+    <!-- 肩を組む腕 -->
+    <path d="M244,320 C270,308 300,304 322,306 L322,318 C300,317 274,320 250,332 Z"/>
+    <path d="M356,300 C382,288 412,284 434,286 L434,298 C412,297 386,300 362,312 Z"/>
+    <path d="M478,300 C452,288 422,284 400,286 L400,298 C422,297 448,300 472,312 Z"/>
+    <path d="M590,320 C564,308 534,304 512,306 L512,318 C534,317 560,320 584,332 Z"/>
+  </g>
+</svg>

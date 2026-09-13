@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="SIM">
+  <circle cx="100" cy="100" r="92" fill="none" stroke="#d4af37" stroke-width="4"/>
+  <circle cx="100" cy="100" r="70" fill="#d4af37" opacity="0.12"/>
+  <text x="100" y="108" font-family="'Noto Sans JP',sans-serif" font-size="15" font-weight="700" fill="#d4af37" text-anchor="middle">SIM</text>
+</svg>

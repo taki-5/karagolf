@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="仲間との乾杯シーン(仮イラスト・実写真差し替え予定)">
+  <defs>
+    <linearGradient id="roomg1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#221a10"/>
+      <stop offset="100%" stop-color="#0b0b0c"/>
+    </linearGradient>
+    <radialGradient id="glowg1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f2c94c" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#f2c94c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowRedg1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8382b" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#e8382b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#roomg1)"/>
+  <ellipse cx="400" cy="300" rx="260" ry="180" fill="url(#glowg1)" opacity="0.7"/>
+  <circle cx="140" cy="120" r="120" fill="url(#glowRedg1)" opacity="0.5"/>
+  <circle cx="660" cy="130" r="120" fill="url(#glowg1)" opacity="0.4"/>
+
+  <g fill="#0a0805" stroke="#f2c94c" stroke-width="1.5">
+    <!-- 左の人物 -->
+    <circle cx="270" cy="280" r="26"/>
+    <path d="M240,310 C235,345 237,390 248,430 L232,460 L262,460 L270,420 L280,460 L308,460 L294,428 C304,392 302,346 296,310 C280,298 256,298 240,310 Z"/>
+    <path d="M244,314 C220,300 202,278 192,250 L204,242 C214,268 230,290 252,306 Z"/>
+    <line x1="192" y1="248" x2="170" y2="205" stroke="#f2c94c" stroke-width="5" stroke-linecap="round"/>
+    <path d="M162,190 L178,200 L172,225 L154,222 Z" fill="#e8382b" stroke="#f2c94c" stroke-width="1.5"/>
+
+    <!-- 中央の人物(手前・大きめ) -->
+    <circle cx="410" cy="255" r="32"/>
+    <path d="M370,292 C364,336 366,390 380,438 L360,474 L396,474 L406,426 L418,474 L452,474 L436,436 C448,392 446,338 438,292 C420,278 390,278 370,292 Z"/>
+    <path d="M374,296 C346,280 324,254 312,222 L326,212 C338,242 358,268 384,286 Z"/>
+    <line x1="312" y1="220" x2="284" y2="168" stroke="#f2c94c" stroke-width="6" stroke-linecap="round"/>
+    <path d="M274,150 L294,162 L286,192 L262,188 Z" fill="#f2e6cf" stroke="#f2c94c" stroke-width="1.5"/>
+
+    <!-- 右の人物 -->
+    <circle cx="546" cy="280" r="26"/>
+    <path d="M516,310 C511,345 513,390 524,430 L508,460 L538,460 L546,420 L556,460 L584,460 L570,428 C580,392 578,346 572,310 C556,298 532,298 516,310 Z"/>
+    <path d="M572,314 C596,300 614,278 624,250 L612,242 C602,268 586,290 564,306 Z"/>
+    <line x1="624" y1="248" x2="646" y2="205" stroke="#f2c94c" stroke-width="5" stroke-linecap="round"/>
+    <path d="M638,190 L654,200 L648,222 L630,218 Z" fill="#3aa655" stroke="#f2c94c" stroke-width="1.5"/>
+  </g>
+
+  <!-- 乾杯の光の弾け -->
+  <g fill="#f2e6cf" opacity="0.9">
+    <circle cx="210" cy="185" r="3"/>
+    <circle cx="230" cy="170" r="2"/>
+    <circle cx="440" cy="150" r="3"/>
+    <circle cx="460" cy="170" r="2"/>
+    <circle cx="600" cy="185" r="3"/>
+  </g>
+</svg>
