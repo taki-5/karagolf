@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENU | KARA PREMIUM GOLF & BAR 高崎駅徒歩10分のゴルフシミュレーター&バー</title>
+<meta name="description" content="KARA PREMIUM GOLF & BAR(群馬県高崎市・高崎駅徒歩10分)のドリンク&フードメニュー。ビール・ウイスキー・サワー・焼酎・日本酒・テキーラ・シャンパン・ノンアルコール・ソフトドリンク・カクテル・フードまで、価格(税込)付きでご案内します。">
+<meta name="keywords" content="高崎 ゴルフバー メニュー,高崎 ゴルフ 飲み会,KARA PREMIUM GOLF BAR,高崎駅 バー メニュー">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://kara-premium-golf-bar.example.com/menu.html">
+
+<!-- OGP -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="KARA PREMIUM GOLF & BAR">
+<meta property="og:title" content="MENU | KARA PREMIUM GOLF & BAR">
+<meta property="og:description" content="ビール・ウイスキー・サワー・焼酎・日本酒・カクテル・フードなど、KARA PREMIUM GOLF & BARのメニューをご紹介します。">
+<meta property="og:image" content="images/kara-mascot-badge-reference.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- favicon (仮：ゴルフ旗の簡易アイコン。差し替え可) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230b0b0c'/%3E%3Cline x1='35' y1='80' x2='35' y2='20' stroke='%23d4af37' stroke-width='6'/%3E%3Cpath d='M35 20 L70 32 L35 44 Z' fill='%23e8382b'/%3E%3C/svg%3E">
+
+<!-- Google Fonts: 見出し=RocknRoll One(ポップで力強い) / 本文=Noto Sans JP(可読性) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+
+<!-- ローディング画面：ロゴが浮かび上がる演出 -->
+<div id="loader" aria-hidden="true">
+  <div class="loader-logo">
+    <span class="loader-logo-main">KARA</span>
+    <span class="loader-logo-sub">PREMIUM GOLF &amp; BAR</span>
+  </div>
+</div>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- 固定ヘッダー -->
+<header id="site-header" class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="header-logo">
+      <img class="header-logo-badge" src="images/kara-mascot-badge-reference.png" alt="KARA PREMIUM GOLF & BAR ロゴバッジ(ゴルフスイングするお猿さんキャラクター)" width="80" height="80" loading="eager">
+      <span class="header-logo-text">KARA <span>PREMIUM GOLF &amp; BAR</span></span>
+    </a>
+    <nav class="header-nav" id="header-nav" aria-label="サイト内ナビゲーション">
+      <a href="menu.html" aria-current="page">MENU</a>
+      <a href="index.html#simulator">シミュレーター</a>
+      <a href="index.html#play-menu">PLAY MENU</a>
+      <a href="index.html#recommend">こんな人に</a>
+      <a href="index.html#gallery">ギャラリー</a>
+      <a href="index.html#party">貸切・コンペ</a>
+      <a href="index.html#campaign">OPEN特典</a>
+      <a href="index.html#access">アクセス</a>
+    </nav>
+    <a href="index.html#campaign" class="btn btn-primary header-cta">ご予約・LINE登録</a>
+    <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="header-nav" aria-label="メニューを開く">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- MENUページ タイトル -->
+  <section class="menu-hero">
+    <div class="menu-hero-glow" aria-hidden="true"></div>
+    <div class="container menu-hero-inner">
+      <p class="eyebrow">DRINK &amp; FOOD</p>
+      <h1 class="menu-hero-title">MENU</h1>
+      <p class="menu-hero-jp">メニュー</p>
+      <p class="section-lead menu-hero-lead">お好きな一杯、お好きな一品を。カテゴリーをタップすると、すぐにジャンプできます。</p>
+    </div>
+  </section>
+
+  <!-- カテゴリーナビ -->
+  <nav class="menu-catnav" aria-label="メニューカテゴリー">
+    <div class="menu-catnav-scroll">
+      <a href="#beer">BEER</a>
+      <a href="#whisky">WHISKY</a>
+      <a href="#sour">SOUR&amp;CHU-HI</a>
+      <a href="#shochu">SHOCHU</a>
+      <a href="#sake">SAKE</a>
+      <a href="#tequila">TEQUILA</a>
+      <a href="#other">OTHER</a>
+      <a href="#champagne">CHAMPAGNE</a>
+      <a href="#nonalcohol">NON-ALCOHOL</a>
+      <a href="#softdrink">SOFT DRINK</a>
+      <a href="#cocktail">COCKTAIL</a>
+      <a href="#food">FOOD</a>
+    </div>
+  </nav>
+
+  <div class="container menu-body">
+
+    <!-- 01. BEER -->
+    <section id="beer" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">01</span>
+        <h2>BEER<span class="menu-cat-jp">ビール</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">バドワイザー</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥650</span>
+            <span class="price-tax">税込 ¥715</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 02. WHISKY -->
+    <section id="whisky" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">02</span>
+        <h2>WHISKY<span class="menu-cat-jp">ウイスキー</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">ウイスキー(角)<span class="menu-item-note">シングル</span></span>
+          <span class="menu-item-price menu-item-price--pending">
+            <span class="price-pending">価格準備中</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">ハイボール</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥590</span>
+            <span class="price-tax">税込 ¥649</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 03. SOUR & CHU-HI -->
+    <section id="sour" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">03</span>
+        <h2>SOUR &amp; CHU-HI<span class="menu-cat-jp">サワー・酎ハイ</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">レモンサワー</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥590</span>
+            <span class="price-tax">税込 ¥649</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">グレープフルーツサワー</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥590</span>
+            <span class="price-tax">税込 ¥649</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">巨峰サワー</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥590</span>
+            <span class="price-tax">税込 ¥649</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">ウーロンハイ</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥590</span>
+            <span class="price-tax">税込 ¥649</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 04. SHOCHU -->
+    <section id="shochu" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">04</span>
+        <h2>SHOCHU<span class="menu-cat-jp">焼酎</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">黒霧島<span class="menu-item-note">ロック・水割り・ソーダ</span></span>
+          <span class="menu-item-price">
+            <span class="price-main">¥590</span>
+            <span class="price-tax">税込 ¥649</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 05. SAKE -->
+    <section id="sake" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">05</span>
+        <h2>SAKE<span class="menu-cat-jp">日本酒</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">赤城山<span class="menu-item-note">冷・熱燗</span></span>
+          <span class="menu-item-price">
+            <span class="price-main">¥690</span>
+            <span class="price-tax">税込 ¥759</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 06. TEQUILA -->
+    <section id="tequila" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">06</span>
+        <h2>TEQUILA<span class="menu-cat-jp">テキーラ</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">ショット</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥640</span>
+            <span class="price-tax">税込 ¥704</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 07. OTHER -->
+    <section id="other" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">07</span>
+        <h2>OTHER<span class="menu-cat-jp">その他</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">観覧車</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥7,500</span>
+            <span class="price-tax">税込 ¥8,250</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 08. CHAMPAGNE -->
+    <section id="champagne" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">08</span>
+        <h2>CHAMPAGNE<span class="menu-cat-jp">オリジナルシャンパン</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">オリジナルシャンパン</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥18,000</span>
+            <span class="price-tax">税込 ¥19,800</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 09. NON-ALCOHOL -->
+    <section id="nonalcohol" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">09</span>
+        <h2>NON-ALCOHOL<span class="menu-cat-jp">ノンアルコール</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">ノンアルコール 各種</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥500</span>
+            <span class="price-tax">税込 ¥550</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 10. SOFT DRINK -->
+    <section id="softdrink" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">10</span>
+        <h2>SOFT DRINK<span class="menu-cat-jp">ソフトドリンク</span></h2>
+      </header>
+      <p class="menu-cat-note">※価格は準備中です。詳しくはスタッフまでお尋ねください。</p>
+      <ul class="menu-list menu-list--grid">
+        <li class="menu-item menu-item--nopricecol">
+          <span class="menu-item-name">コカコーラ</span>
+        </li>
+        <li class="menu-item menu-item--nopricecol">
+          <span class="menu-item-name">コカコーラZERO</span>
+        </li>
+        <li class="menu-item menu-item--nopricecol">
+          <span class="menu-item-name">ジンジャーエール</span>
+        </li>
+        <li class="menu-item menu-item--nopricecol">
+          <span class="menu-item-name">ウーロン茶</span>
+        </li>
+        <li class="menu-item menu-item--nopricecol">
+          <span class="menu-item-name">リンゴジュース</span>
+        </li>
+        <li class="menu-item menu-item--nopricecol">
+          <span class="menu-item-name">オレンジジュース</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 11. COCKTAIL -->
+    <section id="cocktail" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">11</span>
+        <h2>COCKTAIL<span class="menu-cat-jp">カクテル</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">ピーチウーロン</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥590</span>
+            <span class="price-tax">税込 ¥649</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 12. FOOD -->
+    <section id="food" class="menu-cat-card">
+      <header class="menu-cat-header">
+        <span class="menu-cat-num">12</span>
+        <h2>FOOD<span class="menu-cat-jp">フード・おつまみ</span></h2>
+      </header>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <span class="menu-item-name">ほくほくポテト</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥500</span>
+            <span class="price-tax">税込 ¥550</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">熱々たこ焼き</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥580</span>
+            <span class="price-tax">税込 ¥638</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">枝豆</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥390</span>
+            <span class="price-tax">税込 ¥429</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">スナック盛り</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥590</span>
+            <span class="price-tax">税込 ¥649</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">アメリカンドッグ</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥390</span>
+            <span class="price-tax">税込 ¥429</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">やみつきピザ</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥650</span>
+            <span class="price-tax">税込 ¥715</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">焼きおにぎり</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥390</span>
+            <span class="price-tax">税込 ¥429</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">チャーハン</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥690</span>
+            <span class="price-tax">税込 ¥759</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">やきちくわ</span>
+          <span class="menu-item-price">
+            <span class="price-main">¥390</span>
+            <span class="price-tax">税込 ¥429</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">パスタ<span class="menu-item-note">ペペロンチーノ・カルボナーラ</span></span>
+          <span class="menu-item-price">
+            <span class="price-main">¥690</span>
+            <span class="price-tax">税込 ¥759</span>
+          </span>
+        </li>
+        <li class="menu-item">
+          <span class="menu-item-name">ポテト＋チキン<span class="menu-item-note">バスケット</span></span>
+          <span class="menu-item-price">
+            <span class="price-main">¥800</span>
+            <span class="price-tax">税込 ¥880</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <img class="footer-badge" src="images/kara-mascot-badge-reference.png" alt="KARA PREMIUM GOLF & BAR ロゴバッジ(ゴルフスイングするお猿さんキャラクター)" width="140" height="140" loading="lazy">
+    <div class="footer-logo">KARA <span>PREMIUM GOLF &amp; BAR</span></div>
+    <p>群馬県高崎市九蔵町25-1 Westin 1F ｜ JR高崎駅より徒歩10分 ｜ 2026年10月中旬 GRAND OPEN</p>
+    <p class="footer-copy">&copy; 2026 KARA PREMIUM GOLF &amp; BAR</p>
+  </div>
+</footer>
+
+<!-- フローティング予約/LINE登録ボタン -->
+<div class="floating-cta" id="floating-cta">
+  <a href="#" class="fab fab-line" aria-label="LINEで登録する">
+    <span class="fab-icon" aria-hidden="true">LINE</span>
+  </a>
+  <a href="index.html#campaign" class="fab fab-reserve" aria-label="来店予約をする">
+    <span class="fab-icon" aria-hidden="true">予約</span>
+  </a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

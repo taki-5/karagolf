@@ -90,6 +90,15 @@ a { color: inherit; text-decoration: none; }
   position: relative;
 }
 
+/* 英語見出し+日本語訳を続けて書く場合、改行して小さく添える */
+.section-title-jp {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.42em;
+  letter-spacing: 0.2em;
+  color: var(--color-text-dim);
+}
+
 .section-lead {
   color: var(--color-text-dim);
   max-width: 640px;
@@ -453,7 +462,9 @@ a { color: inherit; text-decoration: none; }
 .testimonials > *,
 .gallery-grid > *,
 .party-inner > *,
-.access-inner > * {
+.access-inner > *,
+.play-layout > *,
+.play-info-grid > * {
   min-width: 0;
 }
 
@@ -485,6 +496,128 @@ a { color: inherit; text-decoration: none; }
   margin: 0 0 10px;
 }
 .sim-card-body p { color: var(--color-text-dim); margin: 0; font-size: 0.92rem; }
+
+/* ---------- PLAY MENU section ---------- */
+.play-section { background: var(--color-bg); }
+
+.play-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+/* 料金(最重要情報)を大きく見せるカード */
+.play-price-card {
+  background: linear-gradient(160deg, var(--color-bg-card), #1f170c);
+  border: 1px solid var(--color-gold);
+  border-radius: 20px;
+  padding: 40px 28px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.play-price-label {
+  margin: 0;
+  font-family: var(--font-heading);
+  color: var(--color-gold);
+  letter-spacing: 0.25em;
+  font-size: 0.8rem;
+}
+
+.play-price-duration {
+  margin: 14px 0 6px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 5vw, 2rem);
+  color: var(--color-text);
+}
+.play-price-duration span {
+  margin-left: 6px;
+  font-size: 0.55em;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+}
+
+.play-price-main {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(2.6rem, 11vw, 4rem);
+  line-height: 1;
+  color: var(--color-gold-bright);
+  text-shadow: 0 0 34px rgba(242, 201, 76, 0.35);
+}
+.play-price-main span { font-size: 0.55em; }
+
+.play-price-tax {
+  margin: 12px 0 0;
+  font-size: 0.88rem;
+  color: var(--color-text-dim);
+}
+
+.play-price-note {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 7px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text-dim);
+}
+
+/* 利用条件カード群 */
+.play-info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.play-info-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 26px 24px;
+}
+.play-info-card--accent { border-color: var(--color-gold); }
+
+.play-info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.12);
+  color: var(--color-gold-bright);
+}
+.play-info-icon svg { width: 20px; height: 20px; }
+
+.play-info-card h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: var(--color-gold-bright);
+}
+.play-info-card h3 span {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+  color: var(--color-text-dim);
+}
+
+.play-info-card p {
+  margin: 0 0 6px;
+  font-size: 0.92rem;
+  color: var(--color-text);
+}
+.play-info-card p:last-child { margin-bottom: 0; }
+.play-info-card .check-list { margin: 0; }
 
 /* ---------- Recommend section ---------- */
 .recommend-section { background: var(--color-bg-alt); }
@@ -743,6 +876,11 @@ a { color: inherit; text-decoration: none; }
 
 @media (min-width: 640px) {
   .hero-photo-wrap { width: min(480px, 56vw); }
+  .play-info-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 900px) {
+  .play-layout { grid-template-columns: 360px 1fr; align-items: start; }
 }
 
 @media (min-width: 1024px) {

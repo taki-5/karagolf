@@ -228,6 +228,20 @@
       );
     });
 
+    /* PLAY MENU：利用条件カードのスタッガー */
+    gsap.fromTo(
+      ".play-info-card",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power3.out",
+        stagger: 0.1,
+        scrollTrigger: { trigger: ".play-info-grid", start: "top 85%" }
+      }
+    );
+
     /* おすすめアイコン：スタッガー */
     gsap.fromTo(
       ".recommend-item",
@@ -295,6 +309,21 @@
         end: "bottom top",
         scrub: true
       }
+    });
+
+    /* MENUページ：カテゴリーカードがスクロールでふわっと登場 */
+    gsap.utils.toArray(".menu-cat-card").forEach(function (card) {
+      gsap.fromTo(
+        card,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: { trigger: card, start: "top 90%" }
+        }
+      );
     });
 
   }
