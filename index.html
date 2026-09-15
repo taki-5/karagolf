@@ -63,7 +63,7 @@
 <header id="site-header" class="site-header">
   <div class="header-inner">
     <a href="#hero" class="header-logo">
-      <img class="header-logo-badge" src="images/kara-mascot-badge-reference.png" alt="KARA PREMIUM GOLF & BAR ロゴバッジ(ゴルフスイングするお猿さんキャラクター)" width="80" height="80" loading="eager">
+      <img class="header-logo-badge" src="images/kara-logo.png" alt="KARA PREMIUM GOLF & BAR ロゴ" width="80" height="80" loading="eager">
       <span class="header-logo-text">KARA <span>PREMIUM GOLF &amp; BAR</span></span>
     </a>
     <nav class="header-nav" id="header-nav" aria-label="サイト内ナビゲーション">
@@ -92,18 +92,23 @@
     <div class="hero-photo-stage">
       <div class="hero-burst" aria-hidden="true"></div>
       <div class="hero-overlay"></div>
+      <!-- ロゴ(特にKARAの文字)の視認性確保のため、放射状の光条を完全には消さず、
+           ロゴの真後ろだけを黒〜透明のグラデーションでわずかに沈める -->
+      <div class="hero-photo-backdrop" aria-hidden="true"></div>
       <div class="hero-photo-wrap">
-        <img class="hero-photo" id="hero-photo" src="images/kara-mascot-badge-reference.png" alt="KARA PREMIUM GOLF & BAR マスコットバッジ(ゴルフスイングするお猿さんキャラクター)">
+        <img class="hero-photo" id="hero-photo" src="images/kara-logo.png" alt="KARA PREMIUM GOLF & BAR ロゴ">
+        <!-- ロゴ画像は無加工のまま。呼吸/クラブ/グラスの各部位だけを同じ画像のコピーとして
+             切り出し(マスク)、ごくわずかに動かすことで、ロゴ自体を変形させずに生命感を加える。
+             目を閉じた表情は元のロゴのまま完全に固定し、顔・目には一切アニメーションを加えない。 -->
+        <div class="hero-photo-layer hero-photo-layer--body" aria-hidden="true"></div>
+        <div class="hero-photo-layer hero-photo-layer--club" aria-hidden="true"></div>
+        <div class="hero-photo-layer hero-photo-layer--glass" aria-hidden="true"></div>
       </div>
     </div>
 
     <div class="hero-inner">
       <div class="hero-content">
-        <div class="hero-logo" data-anim="hero-logo">
-          <span class="hero-logo-main">KARA</span>
-          <span class="hero-logo-sub">PREMIUM GOLF &amp; BAR</span>
-        </div>
-        <p class="hero-copy" data-anim="hero-copy">高崎駅から徒歩10分。<br class="sp-only">「待ち時間なし」の新しいゴルフ体験と、<br class="sp-only">盛り上がる大人の社交場。</p>
+        <p class="hero-copy" data-anim="hero-copy">高崎駅から徒歩10分。<br class="sp-only">「待ち時間なし」の新しいゴルフ体験と、<br>盛り上がる大人の社交場。</p>
 
         <div class="countdown" data-anim="hero-countdown" aria-label="グランドオープンまでのカウントダウン">
           <p class="countdown-label">2026年10月中旬 GRAND OPEN まで</p>
@@ -379,7 +384,7 @@
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <img class="footer-badge" src="images/kara-mascot-badge-reference.png" alt="KARA PREMIUM GOLF & BAR ロゴバッジ(ゴルフスイングするお猿さんキャラクター)" width="140" height="140" loading="lazy">
+    <img class="footer-badge" src="images/kara-logo.png" alt="KARA PREMIUM GOLF & BAR ロゴ" width="140" height="140" loading="lazy">
     <div class="footer-logo">KARA <span>PREMIUM GOLF &amp; BAR</span></div>
     <p>群馬県高崎市九蔵町25-1 Westin 1F ｜ JR高崎駅より徒歩10分 ｜ 2026年10月中旬 GRAND OPEN</p>
     <p class="footer-copy">&copy; 2026 KARA PREMIUM GOLF &amp; BAR</p>

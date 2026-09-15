@@ -71,6 +71,27 @@
   }
 
   /* ------------------------------------------------------------------
+   * フローティングCTA(LINE/予約)：ヒーロー内では本来のCTAボタンを主役にしたいので、
+   * ヒーローが画面に大きく映っている間は隠し、スクロールで離れたら表示する。
+   * IntersectionObserver非対応環境では常時表示のまま(CSS側の初期値がopacity:1のため)。
+   * ---------------------------------------------------------------- */
+  function initFloatingCta() {
+    var cta = document.getElementById("floating-cta");
+    var hero = document.getElementById("hero");
+    if (!cta || !hero || typeof IntersectionObserver === "undefined") return;
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          cta.classList.toggle("is-hidden", entry.intersectionRatio > 0.4);
+        });
+      },
+      { threshold: [0, 0.4, 1] }
+    );
+    observer.observe(hero);
+  }
+
+  /* ------------------------------------------------------------------
    * カウントダウン（スロットマシン風の数字リール演出）
    * ---------------------------------------------------------------- */
   function initCountdown() {
@@ -188,9 +209,12 @@
 
     /* ヒーロー：実写バッジが「どーん」と登場 → ロゴ→コピー→カウントダウン→CTA */
     var heroTl = gsap.timeline({ delay: 0.3 });
-    var heroPhoto = document.getElementById("hero-photo");
+    var heroPhoto = document.querySelector(".hero-photo-wrap");
 
     if (heroPhoto) {
+      // ラッパーごとポップインさせることで、無加工の実写ロゴと
+      // マイクロアニメーション用レイヤー(呼吸/クラブ/グラス/瞬き)が
+      // 常に同じ位置・同じ大きさで重なった状態を保つ。
       heroTl.fromTo(
         heroPhoto,
         { opacity: 0, scale: 0.55 },
@@ -201,10 +225,9 @@
 
     var textStart = heroPhoto ? 0.45 : 0;
     heroTl
-      .fromTo('[data-anim="hero-logo"]', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart)
-      .fromTo('[data-anim="hero-copy"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart + 0.15)
-      .fromTo('[data-anim="hero-countdown"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart + 0.3)
-      .fromTo('[data-anim="hero-cta"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, textStart + 0.45);
+      .fromTo('[data-anim="hero-copy"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart)
+      .fromTo('[data-anim="hero-countdown"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart + 0.15)
+      .fromTo('[data-anim="hero-cta"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, textStart + 0.3);
 
     /* ヒーロー：背後の光条がスクロールでゆっくり回転 */
     gsap.to(".hero-burst", {
@@ -334,6 +357,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     initLoader();
     initHeader();
+    initFloatingCta();
     initCountdown();
     initScrollAnimations();
   });

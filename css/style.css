@@ -218,10 +218,9 @@ a { color: inherit; text-decoration: none; }
 .header-logo-badge {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 8px;
   object-fit: cover;
   object-position: 50% 50%;
-  transform: scale(1.14);
   box-shadow: 0 0 0 1px var(--color-border);
   flex-shrink: 0;
 }
@@ -298,17 +297,19 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 28px 0 8px;
+  padding: 40px 0 20px;
 }
 
-/* キャラクターの背後で回転する光条(コミック風の「ドーン」演出) */
+/* キャラクターの背後で回転する光条(コミック風の「ドーン」演出)
+   ロゴが透過PNG化されたことで光条がロゴの隙間から透けるため、
+   文字と干渉しすぎないよう強度・到達範囲を抑えている */
 .hero-burst {
   position: absolute;
   inset: -25%;
   z-index: 0;
-  background: repeating-conic-gradient(from 0deg, rgba(212, 175, 55, 0.22) 0deg 8deg, transparent 8deg 20deg);
-  -webkit-mask-image: radial-gradient(circle at 50% 30%, black 0%, black 28%, transparent 62%);
-  mask-image: radial-gradient(circle at 50% 30%, black 0%, black 28%, transparent 62%);
+  background: repeating-conic-gradient(from 0deg, rgba(212, 175, 55, 0.15) 0deg 8deg, transparent 8deg 20deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, black 0%, black 20%, transparent 50%);
+  mask-image: radial-gradient(circle at 50% 30%, black 0%, black 20%, transparent 50%);
   will-change: transform;
 }
 
@@ -316,27 +317,138 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: radial-gradient(ellipse at 50% 28%, rgba(212, 175, 55, 0.12), transparent 60%);
+  background: radial-gradient(ellipse at 50% 28%, rgba(212, 175, 55, 0.08), transparent 55%);
+}
+
+/* ロゴの真後ろ(KARAの文字がある上部〜PREMIUM GOLF & BARがある下部まで)を
+   黒〜透明のグラデーションでわずかに沈め、透過ロゴの金文字と背後の光条が
+   干渉しないようコントラストを確保する。中心を一番暗く、外側へ自然に
+   透明化する多段グラデーションにし、「黒い円を置いた」感じを避けている。 */
+.hero-photo-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 56% 72% at 50% 47%,
+    rgba(3, 3, 4, 0.6) 0%,
+    rgba(3, 3, 4, 0.48) 30%,
+    rgba(3, 3, 4, 0.28) 55%,
+    rgba(3, 3, 4, 0.1) 75%,
+    transparent 92%
+  );
 }
 
 .hero-photo-wrap {
   position: relative;
   z-index: 2;
-  width: min(420px, 82vw);
+  width: min(340px, 66vw);
   aspect-ratio: 1 / 1;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45));
+  /* ロゴがアルファ透過PNGのため、drop-shadowは各文字・図形の輪郭にも
+     個別にかかる。ぼやけた発光に見えないよう、ぼかし半径を抑えた
+     控えめな影に留める。 */
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.4));
 }
 
-/* 画像そのものは無加工。丸くトリミングして大きさ/透明度だけをJS(GSAP)でアニメーションさせる。
+/* 画像そのものは無加工。角丸の正方形で表示し、大きさ/透明度だけをJS(GSAP)でアニメーションさせる。
    opacityの既定値は1(表示状態) — JS/GSAPが読み込めない場合でも写真が消えたままにならないように。 */
 .hero-photo {
   width: 100%;
   height: 100%;
   display: block;
-  border-radius: 50%;
+  border-radius: 24px;
   object-fit: cover;
   object-position: 50% 50%;
-  transform: scale(1.14);
+}
+
+/* ==========================================================================
+   ロゴのマイクロアニメーション(呼吸・クラブの揺れ・グラスの液面)
+   ----------------------------------------------------------------------
+   ロゴ画像(kara-logo.png)そのものは一切改変しない(背景の白のみ透明化した無加工画像)。
+   各レイヤーは同じ画像を background-image として重ね、mask-image / clip-path で
+   該当部位だけをごく薄いフェザー付きの楕円で切り出し、ごくわずかな transform だけを
+   適用する。切り出し範囲外は完全に透明なので、下にある無加工の <img>
+   (.hero-photo) がそのまま見えており、文字・背景・ロゴ全体のレイアウトは
+   常にピクセル単位で不変。顔・目は一切アニメーションさせず、元のロゴの
+   「目を閉じた表情」をそのまま完全に固定する。6秒でシームレスにループする。
+
+   タイムライン(6秒):
+     0.0-1.5s  猿がゆっくり呼吸する
+     1.5-2.5s  ゴルフクラブの先端がごくわずかに揺れる
+     2.5-4.0s  グラスの中のお酒だけがごくわずかに揺れる
+     4.0-6.0s  すべての動きをゆっくり元の状態へ戻す(→0秒とシームレスに接続)
+   ========================================================================== */
+.hero-photo-layer {
+  position: absolute;
+  inset: 0;
+  display: none; /* mask未対応ブラウザでは何も表示しない(下の無加工画像のみ表示) */
+  background-image: url("../images/kara-logo.png");
+  background-size: cover;
+  background-position: 50% 50%;
+  border-radius: 24px;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@supports (mask-image: linear-gradient(#000, #000)) or (-webkit-mask-image: linear-gradient(#000, #000)) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-photo-layer { display: block; }
+
+    /* 猿の身体:胸〜肩まわりだけを狭く切り出し、下端を軸にごくわずかに膨らませることで
+       「上下にスライドする」のではなく「胸が呼吸で膨らむ」ように見せる。フェザーを深めに
+       (10%)取り、静止部分との境目が絶対に分からないようにする。 */
+    .hero-photo-layer--body {
+      -webkit-mask-image: radial-gradient(ellipse 17.6% 10.1% at 51.5% 46.7%, #000 10%, transparent 100%);
+      mask-image: radial-gradient(ellipse 17.6% 10.1% at 51.5% 46.7%, #000 10%, transparent 100%);
+      transform-origin: 50% 100%;
+      animation: heroBreathe 6s ease-in-out infinite;
+      animation-delay: 1s;
+    }
+
+    /* ゴルフクラブ:グリップ(手元)を軸に、先端だけがほんの少し揺れる。振り抜きには絶対にしない */
+    .hero-photo-layer--club {
+      -webkit-mask-image: radial-gradient(ellipse 50.4% 20.1% at 37% 51.7%, #000 22%, transparent 100%);
+      mask-image: radial-gradient(ellipse 50.4% 20.1% at 37% 51.7%, #000 22%, transparent 100%);
+      clip-path: polygon(55.41% 76.31%, 66.61% 59.63%, 18.64% 27.15%, 7.36% 43.85%);
+      -webkit-clip-path: polygon(55.41% 76.31%, 66.61% 59.63%, 18.64% 27.15%, 7.36% 43.85%);
+      transform-origin: 60.9% 68%;
+      animation: heroClubSway 6s ease-in-out infinite;
+      animation-delay: 1s;
+    }
+
+    /* グラスの中の液体:グラスの輪郭には触れないよう液面の中心だけを狭く柔らかく切り出し、
+       ごく僅かな傾き(skew)のみを与える。scaleは使わず、液量が変わって見えないようにする。 */
+    .hero-photo-layer--glass {
+      -webkit-mask-image: radial-gradient(ellipse 8.8% 6.3% at 79.9% 45.3%, #000 8%, transparent 100%);
+      mask-image: radial-gradient(ellipse 8.8% 6.3% at 79.9% 45.3%, #000 8%, transparent 100%);
+      transform-origin: 50.2% 63.7%;
+      animation: heroGlassShimmer 6s ease-in-out infinite;
+      animation-delay: 1s;
+    }
+  }
+}
+
+/* 0-25%=0-1.5s(呼吸) / 25-41.7%=1.5-2.5s(クラブ) / 41.7-66.7%=2.5-4s(グラス) / 66.7-100%=4-6s(復帰) */
+@keyframes heroBreathe {
+  0%      { transform: scaleY(1); }
+  25%     { transform: scaleY(1.0125); }
+  66.7%   { transform: scaleY(1.0125); }
+  100%    { transform: scaleY(1); }
+}
+
+@keyframes heroClubSway {
+  0%, 25% { transform: rotate(0deg); }
+  33.3%   { transform: rotate(0.40deg); }
+  41.7%   { transform: rotate(0.20deg); }
+  66.7%   { transform: rotate(0.20deg); }
+  100%    { transform: rotate(0deg); }
+}
+
+@keyframes heroGlassShimmer {
+  0%, 41.7% { transform: skewX(0deg); }
+  48%       { transform: skewX(0.625deg); }
+  55%       { transform: skewX(-0.44deg); }
+  62%       { transform: skewX(0.15deg); }
+  66.7%, 100% { transform: skewX(0deg); }
 }
 
 /* ヒーロー本文(ロゴ・コピー・カウントダウン等)はバッジの下に通常フローで続く */
@@ -350,33 +462,23 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-content {
-  padding: 0 20px 64px;
+  padding: 8px 20px 64px;
   max-width: 780px;
   margin: 0 auto;
 }
 
-.hero-logo { margin-bottom: 28px; }
-.hero-logo-main {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: clamp(3rem, 12vw, 6.5rem);
-  color: var(--color-gold-bright);
-  line-height: 1;
-  text-shadow: 0 0 40px rgba(242, 201, 76, 0.4);
-}
-.hero-logo-sub {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: clamp(0.9rem, 2vw, 1.3rem);
-  letter-spacing: 0.35em;
-  margin-top: 10px;
-  color: var(--color-text);
-}
-
+/* ロゴ画像自体が「KARA PREMIUM GOLF & BAR」を明確に表しているため、
+   同じブランド名をテキストで重複表示しない。ロゴの直後にキャッチコピーへ続く。 */
 .hero-copy {
+  max-width: 44em;
+  margin: 0 auto 44px;
   font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.8;
   color: var(--color-text-dim);
-  margin-bottom: 44px;
+  /* 折り返しが発生する幅では、なるべく行の長さが偏らない自然な位置で
+     改行されるようにする(対応ブラウザのみ。非対応でも通常の折り返しに
+     フォールバックするだけで実害はない)。 */
+  text-wrap: balance;
 }
 
 .countdown { margin-bottom: 44px; }
@@ -778,10 +880,9 @@ a { color: inherit; text-decoration: none; }
 .footer-badge {
   width: 96px;
   height: 96px;
-  border-radius: 50%;
+  border-radius: 14px;
   object-fit: cover;
   object-position: 50% 50%;
-  transform: scale(1.14);
   box-shadow: 0 0 0 1px var(--color-border), 0 8px 24px rgba(0,0,0,0.4);
   margin: 0 auto 18px;
   display: block;
@@ -796,7 +897,10 @@ a { color: inherit; text-decoration: none; }
 .footer-inner p { color: var(--color-text-dim); font-size: 0.85rem; margin: 4px 0; }
 .footer-copy { margin-top: 16px; font-size: 0.75rem; }
 
-/* ---------- Floating CTA ---------- */
+/* ---------- Floating CTA ----------
+   ヒーロー内では本来のCTAボタン(OPEN記念特典をチェック)を主役にしたいので、
+   ヒーローが画面に大きく映っている間は is-hidden が付与され視界から退く
+   (JS/IntersectionObserver 未対応時は常時表示のまま安全に動作)。 */
 .floating-cta {
   position: fixed;
   right: 18px;
@@ -804,23 +908,40 @@ a { color: inherit; text-decoration: none; }
   z-index: 400;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.floating-cta.is-hidden {
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
 }
 .fab {
-  width: 64px;
-  height: 64px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-heading);
-  font-size: 0.78rem;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.5);
+  font-size: 0.74rem;
+  box-shadow: 0 0 0 1px var(--color-border), 0 8px 22px rgba(0,0,0,0.5);
   transition: transform 0.25s var(--ease-pop), box-shadow 0.25s ease;
 }
 .fab:hover { transform: scale(1.1) rotate(-4deg); }
 .fab-line { background: var(--color-green); color: #06210f; }
-.fab-reserve { background: linear-gradient(135deg, var(--color-gold-bright), var(--color-gold)); color: #1a1305; }
+/* 予約=メインCTA。ひと回り大きくゴールドのグラデーションで存在感を出す */
+.fab-reserve {
+  width: 68px;
+  height: 68px;
+  font-size: 0.8rem;
+  background: linear-gradient(135deg, var(--color-gold-bright), var(--color-gold));
+  color: #1a1305;
+  box-shadow: 0 0 0 1px rgba(255, 236, 179, 0.4), 0 10px 26px rgba(0,0,0,0.55);
+}
 
 /* ---------- Reveal animation base states ----------
    [data-anim] 要素は既定で表示状態(opacity:1)にしておき、
@@ -871,11 +992,12 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 520px) {
   .recommend-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
   .reel-sep { margin-bottom: 18px; }
-  .fab { width: 56px; height: 56px; font-size: 0.7rem; }
+  .fab { width: 52px; height: 52px; font-size: 0.68rem; }
+  .fab-reserve { width: 60px; height: 60px; font-size: 0.74rem; }
 }
 
 @media (min-width: 640px) {
-  .hero-photo-wrap { width: min(480px, 56vw); }
+  .hero-photo-wrap { width: min(440px, 50vw); }
   .play-info-grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -883,8 +1005,28 @@ a { color: inherit; text-decoration: none; }
   .play-layout { grid-template-columns: 360px 1fr; align-items: start; }
 }
 
+/* ---------- Hero: PC表示ではロゴを主役として大きく、余白をたっぷり取る ----------
+   スマートフォン側の値(基本ルール)は一切変更していない。 */
 @media (min-width: 1024px) {
-  .hero-photo-wrap { width: min(520px, 34vw); }
+  .hero-photo-wrap { width: min(500px, 32vw); }
+
+  /* ヘッダーから離れてロゴが浮いているような余白(logoが主役)。
+     ロゴの登場アニメーション(scale 1.14)が上下の余白を見た目上
+     食い込ませるため、CSS上の padding は見た目のギャップより
+     やや大きめに取っている。下端側はCTAが一般的なPC画面の高さに
+     収まるよう控えめに調整。 */
+  .hero-photo-stage { padding: 64px 0 60px; }
+
+  .hero-content { padding: 0 20px 0; }
+
+  .hero-copy {
+    margin-bottom: 24px;
+    font-size: clamp(1.1rem, 1.4vw, 1.375rem);
+  }
+
+  /* カウントダウン→CTAの間隔だけ少し詰め、CTAが画面内に自然に収まるようにする */
+  .countdown { margin-bottom: 8px; }
+  .countdown-label { margin-bottom: 14px; }
 }
 
 /* ==========================================================================
