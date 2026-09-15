@@ -394,20 +394,22 @@ a { color: inherit; text-decoration: none; }
     .hero-photo-layer { display: block; }
 
     /* 猿の身体:胸〜肩まわりだけを狭く切り出し、下端を軸にごくわずかに膨らませることで
-       「上下にスライドする」のではなく「胸が呼吸で膨らむ」ように見せる。フェザーを深めに
-       (10%)取り、静止部分との境目が絶対に分からないようにする。 */
+       「上下にスライドする」のではなく「胸が呼吸で膨らむ」ように見せる。マスクはほぼ
+       ソリッド(黒72%まで不透明)にして、動いている間もロゴの輪郭が常にシャープに
+       見えるようにする。境界のフェザーは継ぎ目を隠すための最小限(残り28%)に留める。 */
     .hero-photo-layer--body {
-      -webkit-mask-image: radial-gradient(ellipse 17.6% 10.1% at 51.5% 46.7%, #000 10%, transparent 100%);
-      mask-image: radial-gradient(ellipse 17.6% 10.1% at 51.5% 46.7%, #000 10%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 17.6% 10.1% at 51.5% 46.7%, #000 72%, transparent 100%);
+      mask-image: radial-gradient(ellipse 17.6% 10.1% at 51.5% 46.7%, #000 72%, transparent 100%);
       transform-origin: 50% 100%;
       animation: heroBreathe 6s ease-in-out infinite;
       animation-delay: 1s;
     }
 
-    /* ゴルフクラブ:グリップ(手元)を軸に、先端だけがほんの少し揺れる。振り抜きには絶対にしない */
+    /* ゴルフクラブ:グリップ(手元)を軸に、先端だけがほんの少し揺れる。振り抜きには絶対にしない。
+       マスクはほぼソリッドにして輪郭のシャープさを保つ。 */
     .hero-photo-layer--club {
-      -webkit-mask-image: radial-gradient(ellipse 50.4% 20.1% at 37% 51.7%, #000 22%, transparent 100%);
-      mask-image: radial-gradient(ellipse 50.4% 20.1% at 37% 51.7%, #000 22%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 50.4% 20.1% at 37% 51.7%, #000 78%, transparent 100%);
+      mask-image: radial-gradient(ellipse 50.4% 20.1% at 37% 51.7%, #000 78%, transparent 100%);
       clip-path: polygon(55.41% 76.31%, 66.61% 59.63%, 18.64% 27.15%, 7.36% 43.85%);
       -webkit-clip-path: polygon(55.41% 76.31%, 66.61% 59.63%, 18.64% 27.15%, 7.36% 43.85%);
       transform-origin: 60.9% 68%;
@@ -415,11 +417,12 @@ a { color: inherit; text-decoration: none; }
       animation-delay: 1s;
     }
 
-    /* グラスの中の液体:グラスの輪郭には触れないよう液面の中心だけを狭く柔らかく切り出し、
-       ごく僅かな傾き(skew)のみを与える。scaleは使わず、液量が変わって見えないようにする。 */
+    /* グラスの中の液体:グラスの輪郭には触れないよう液面の中心だけを狭く切り出し、
+       ごく僅かな傾き(skew)のみを与える。scaleは使わず、液量が変わって見えないようにする。
+       マスクはほぼソリッドにして輪郭のシャープさを保つ。 */
     .hero-photo-layer--glass {
-      -webkit-mask-image: radial-gradient(ellipse 8.8% 6.3% at 79.9% 45.3%, #000 8%, transparent 100%);
-      mask-image: radial-gradient(ellipse 8.8% 6.3% at 79.9% 45.3%, #000 8%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 8.8% 6.3% at 79.9% 45.3%, #000 72%, transparent 100%);
+      mask-image: radial-gradient(ellipse 8.8% 6.3% at 79.9% 45.3%, #000 72%, transparent 100%);
       transform-origin: 50.2% 63.7%;
       animation: heroGlassShimmer 6s ease-in-out infinite;
       animation-delay: 1s;
