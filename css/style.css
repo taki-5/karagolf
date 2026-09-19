@@ -69,6 +69,25 @@ a { color: inherit; text-decoration: none; }
 
 .sp-only { display: none; }
 
+/* ==========================================================================
+   先行配信(プレオープン)用 一時非表示ユーティリティ
+   ----------------------------------------------------------------------
+   正式オープンに向けて内容を復活させる際は、対象要素からこの
+   class="prelaunch-hidden" を外すだけでよい。HTML側のコンテンツ自体は
+   削除していないので、テキストや画像はそのまま残っている。
+   ========================================================================== */
+.prelaunch-hidden { display: none !important; }
+
+/* 写真に添える注意書き(「掲載写真はイメージです」等)。既存の.campaign-noteと
+   同じトーンの小さく控えめな注記スタイル。 */
+.photo-disclaimer {
+  margin: 14px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-text-dim);
+  text-align: center;
+}
+
 /* ---------- Eyebrow / Section titles ---------- */
 .eyebrow {
   font-family: var(--font-heading);

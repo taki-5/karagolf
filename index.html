@@ -68,7 +68,8 @@
     </a>
     <nav class="header-nav" id="header-nav" aria-label="サイト内ナビゲーション">
       <a href="menu.html">MENU</a>
-      <a href="#simulator">シミュレーター</a>
+      <!-- 先行配信のため一時非表示(#simulatorセクション自体も非表示中)。再表示時はprelaunch-hiddenを外す -->
+      <a href="#simulator" class="prelaunch-hidden">シミュレーター</a>
       <a href="#play-menu">PLAY MENU</a>
       <a href="#recommend">こんな人に</a>
       <a href="#gallery">ギャラリー</a>
@@ -76,7 +77,10 @@
       <a href="#campaign">OPEN特典</a>
       <a href="#access">アクセス</a>
     </nav>
-    <a href="https://reserva.be/karagolf1" class="btn btn-primary header-cta">ご予約・LINE登録</a>
+    <!-- 先行配信では予約システムが未確定のため、このリンクは現状公式LINEのみに接続。
+         「ご予約」の文言は予約システム確定後に復活させる(元の文言はコメントで保持)。
+         <a href="[予約システムURL]" class="btn btn-primary header-cta">ご予約・LINE登録</a> -->
+    <a href="https://lin.ee/XNDaluJ" class="btn btn-primary header-cta">公式LINE登録はこちら</a>
     <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="header-nav" aria-label="メニューを開く">
       <span></span><span></span><span></span>
     </button>
@@ -141,7 +145,9 @@
   </section>
 
   <!-- 2. シミュレーター訴求 -->
-  <section id="simulator" class="section simulator-section">
+  <!-- 先行配信のため一時非表示。ブース1〜3の内容はそのまま残しており、
+       正式オープン前などに再開示する際はこのsection要素からprelaunch-hiddenを外すだけでよい。 -->
+  <section id="simulator" class="section simulator-section prelaunch-hidden">
     <div class="container">
       <p class="eyebrow">NO WAITING TIME</p>
       <h2 class="section-title">最新シミュレーター<span class="accent">3台</span>で、<br>待ち時間なくゴルフ三昧。</h2>
@@ -173,6 +179,7 @@
           </div>
         </article>
       </div>
+      <p class="photo-disclaimer">※掲載している写真はイメージです。実際の店舗・設備とは異なる場合がございます。</p>
     </div>
   </section>
 
@@ -277,11 +284,18 @@
   <!-- 4. お客さんの声・盛り上がりシーンギャラリー -->
   <section id="gallery" class="section gallery-section">
     <div class="container">
-      <p class="eyebrow">VOICE &amp; MOMENTS</p>
-      <h2 class="section-title">お客さんの声・<span class="accent">盛り上がり</span>シーン</h2>
+      <!-- 先行配信中は「お客さんの声」部分を一時非表示にしているため、見出しも
+           ギャラリーのみを指す表現に調整。元の見出し文言はコメントで保持し、
+           testimonials再表示時にあわせて戻す。
+           <p class="eyebrow">VOICE & MOMENTS</p>
+           <h2 class="section-title">お客さんの声・<span class="accent">盛り上がり</span>シーン</h2> -->
+      <p class="eyebrow">MOMENTS</p>
+      <h2 class="section-title"><span class="accent">盛り上がり</span>シーン</h2>
       <p class="section-lead">仲間と、同僚と、コンペ帰りに。KARA PREMIUM GOLF &amp; BARで生まれる笑顔の瞬間をご紹介します。</p>
 
-      <div class="testimonials">
+      <!-- 先行配信のため一時非表示(お客様の声はオープン後に順次掲載予定)。
+           文章は削除していないので、再表示時はprelaunch-hiddenを外すだけでよい。 -->
+      <div class="testimonials prelaunch-hidden">
         <blockquote class="testimonial" data-anim="stagger-item">
           <p>「コンペの打ち上げで貸切利用しました。シミュレーターで盛り上がった後にそのまま宴会できて最高でした！」</p>
           <cite>— 常連のお客様(仮テキスト)</cite>
@@ -304,6 +318,7 @@
         <img src="images/gallery-5-placeholder.jpg" alt="山崎やジャックダニエルなど、こだわりのお酒とカクテル" loading="lazy" width="800" height="500" data-anim="gallery-item">
         <img src="images/gallery-6-placeholder.jpg" alt="自慢のフードメニューの数々" loading="lazy" width="800" height="500" data-anim="gallery-item">
       </div>
+      <p class="photo-disclaimer">※掲載している写真はイメージです。実際の店舗・設備・料理などとは異なる場合がございます。</p>
     </div>
   </section>
 
@@ -312,6 +327,7 @@
     <div class="container party-inner">
       <div class="party-media" data-anim="fade-in-left">
         <img src="images/party-placeholder.jpg" alt="コンペ打ち上げ・二次会で乾杯するお客様の様子" loading="lazy" width="716" height="575">
+        <p class="photo-disclaimer">※掲載している写真はイメージです。実際の店舗・設備とは異なる場合がございます。</p>
       </div>
       <div class="party-content" data-anim="fade-in-right">
         <p class="eyebrow">PRIVATE &amp; PARTY</p>
@@ -334,10 +350,11 @@
     <div class="container campaign-inner">
       <p class="eyebrow">OPEN記念</p>
       <h2 class="section-title campaign-title">グランドオープン特典<br><span class="accent">優待券プレゼント</span></h2>
-      <p class="section-lead">オープン前にLINEご登録・ご予約いただいた方限定で、お得な優待券をプレゼント！カウントダウンが0になるその日まで、ぜひお早めにご登録ください。</p>
+      <p class="section-lead">オープン前にLINEご登録いただいた方限定で、お得な優待券をプレゼント！カウントダウンが0になるその日まで、ぜひお早めにご登録ください。</p>
       <div class="campaign-cta-group">
         <a href="https://lin.ee/XNDaluJ" class="btn btn-primary btn-lg" data-anim="pulse">LINE登録して優待券をもらう</a>
-        <a href="https://reserva.be/karagolf1" class="btn btn-outline btn-lg">来店予約はこちら</a>
+        <!-- 先行配信のため一時非表示(予約システム未確定)。再表示時はprelaunch-hiddenを外す -->
+        <a href="https://lin.ee/XNDaluJ" class="btn btn-outline btn-lg prelaunch-hidden">来店予約はこちら</a>
       </div>
       <p class="campaign-note">※特典内容・配布数は予告なく変更となる場合がございます。</p>
     </div>
@@ -384,7 +401,7 @@
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <img class="footer-badge" src="images/kara-logo-white-bg.png" alt="KARA PREMIUM GOLF & BAR ロゴ" width="140" height="140" loading="lazy">
+    <img class="footer-badge" src="images/kara-logo.png" alt="KARA PREMIUM GOLF & BAR ロゴ" width="140" height="140" loading="lazy">
     <div class="footer-logo">KARA <span>PREMIUM GOLF &amp; BAR</span></div>
     <p>群馬県高崎市九蔵町25-1 Westin 1F ｜ JR高崎駅より徒歩10分 ｜ 2026年10月中旬 GRAND OPEN</p>
     <p class="footer-copy">&copy; 2026 KARA PREMIUM GOLF &amp; BAR</p>
@@ -396,7 +413,8 @@
   <a href="https://lin.ee/XNDaluJ" class="fab fab-line" aria-label="LINEで登録する">
     <span class="fab-icon" aria-hidden="true">LINE</span>
   </a>
-  <a href="https://reserva.be/karagolf1" class="fab fab-reserve" aria-label="来店予約をする">
+  <!-- 先行配信のため一時非表示(予約システム未確定)。再表示時はprelaunch-hiddenを外す -->
+  <a href="https://reserva.be/karagolf1" class="fab fab-reserve prelaunch-hidden" aria-label="来店予約をする">
     <span class="fab-icon" aria-hidden="true">予約</span>
   </a>
 </div>
