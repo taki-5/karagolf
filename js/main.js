@@ -5,6 +5,25 @@
 (function () {
   "use strict";
 
+  /* ==========================================================================
+     先行配信 設定
+     ----------------------------------------------------------------------
+     予約サイトのURLとグランドオープン日が正式に決まるまでの暫定設定。
+     値を設定するだけで、コードを他に触らずに通常表示へ戻せる。
+
+     - RESERVATION_URL: 予約サイトのURL。null(未設定)の間、予約ボタン
+       (class="js-reservation-link" が付いた要素)はクリックしても遷移しない。
+       デザインはそのまま表示される。
+       設定例: "https://reserva.be/karagolf1"
+     - OPEN_DATE: グランドオープン日時(ISO 8601形式)。null(未設定)の間、
+       カウントダウンの日数部分は「∞」を表示する。
+       設定例: "2026-10-15T00:00:00+09:00"
+     ========================================================================== */
+  var SITE_CONFIG = {
+    RESERVATION_URL: null,
+    OPEN_DATE: null
+  };
+
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ------------------------------------------------------------------
@@ -92,15 +111,62 @@
   }
 
   /* ------------------------------------------------------------------
+   * 予約ボタン：予約サイトのURLが未確定の間は、デザインはそのまま
+   * クリックしても遷移しないようにする(class="js-reservation-link" が
+   * 付いた要素が対象)。SITE_CONFIG.RESERVATION_URL を設定するだけで、
+   * 通常どおり遷移するようになる。
+   * ---------------------------------------------------------------- */
+  function initReservationLinks() {
+    var links = document.querySelectorAll(".js-reservation-link");
+    links.forEach(function (link) {
+      if (SITE_CONFIG.RESERVATION_URL) {
+        link.setAttribute("href", SITE_CONFIG.RESERVATION_URL);
+        link.removeAttribute("aria-disabled");
+        link.removeAttribute("title");
+        return;
+      }
+      link.setAttribute("href", "#");
+      link.setAttribute("aria-disabled", "true");
+      link.setAttribute("title", "予約受付開始まで今しばらくお待ちください");
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------
+   * OPEN日未確定時のカウントダウン表示：日数部分を「∞」に置き換え、
+   * 時・分・秒のリールと区切りは非表示にする(数え上げる対象がないため)。
+   * SITE_CONFIG.OPEN_DATE が設定されたら、この関数は呼ばれなくなり
+   * 通常のスロットリール演出に自動的に戻る。
+   * ---------------------------------------------------------------- */
+  function renderOpenDateUnconfirmed(reelsRoot) {
+    reelsRoot.classList.add("is-open-unconfirmed");
+    var daysPair = reelsRoot.querySelector('[data-unit="days"]');
+    if (!daysPair) return;
+    daysPair.innerHTML = "";
+    var box = document.createElement("div");
+    box.className = "digit digit--infinity";
+    var symbol = document.createElement("span");
+    symbol.className = "digit-infinity-symbol";
+    symbol.textContent = "\u221E"; // 無限大記号(文字化け防止のためUnicodeエスケープで指定)
+    box.appendChild(symbol);
+    daysPair.appendChild(box);
+  }
+
+  /* ------------------------------------------------------------------
    * カウントダウン（スロットマシン風の数字リール演出）
    * ---------------------------------------------------------------- */
   function initCountdown() {
-    // 2026年10月中旬 グランドオープン（暫定: 10/15 0:00 JST）。
-    // 正式日程が決まり次第、下の日付を差し替えてください。
-    var TARGET_DATE = new Date("2026-10-15T00:00:00+09:00").getTime();
-
     var reelsRoot = document.getElementById("countdown-reels");
     if (!reelsRoot) return;
+
+    if (!SITE_CONFIG.OPEN_DATE) {
+      renderOpenDateUnconfirmed(reelsRoot);
+      return;
+    }
+
+    var TARGET_DATE = new Date(SITE_CONFIG.OPEN_DATE).getTime();
 
     var units = [
       { key: "days", digits: 2 },
@@ -358,6 +424,7 @@
     initLoader();
     initHeader();
     initFloatingCta();
+    initReservationLinks();
     initCountdown();
     initScrollAnimations();
   });
