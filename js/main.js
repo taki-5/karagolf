@@ -6,21 +6,32 @@
   "use strict";
 
   /* ==========================================================================
-     先行配信 設定
+     サイト設定(先行配信 暫定値)
      ----------------------------------------------------------------------
-     予約サイトのURLとグランドオープン日が正式に決まるまでの暫定設定。
-     値を設定するだけで、コードを他に触らずに通常表示へ戻せる。
+     予約サイトのURL・公式LINEのURL・グランドオープン日時をここでまとめて
+     管理する。値を設定/変更するだけで、他のコードを一切触らずに
+     本来の表示・動作に戻せる。
 
      - RESERVATION_URL: 予約サイトのURL。null(未設定)の間、予約ボタン
        (class="js-reservation-link" が付いた要素)はクリックしても遷移しない。
        デザインはそのまま表示される。
        設定例: "https://reserva.be/karagolf1"
+
+     - LINE_URL: 公式LINEのURL。class="js-line-link" が付いた要素
+       (ヘッダー・フローティングボタン・OPEN特典セクションなど)すべてに
+       このURLが反映される。
+       ※現在の値は本プロジェクトに元々設定されていたものをそのまま
+       引き継いでいるだけで、クライアント確認済みの正式URLかどうかは
+       未確認。差し替えが必要な場合はこの1箇所を変更すればよい。
+
      - OPEN_DATE: グランドオープン日時(ISO 8601形式)。null(未設定)の間、
-       カウントダウンの日数部分は「∞」を表示する。
+       カウントダウンは「OPEN日確定後、カウントダウンが始まります」という
+       案内表示になる(誤解を招く数字は表示しない)。
        設定例: "2026-10-15T00:00:00+09:00"
      ========================================================================== */
   var SITE_CONFIG = {
     RESERVATION_URL: null,
+    LINE_URL: "https://lin.ee/XNDaluJ",
     OPEN_DATE: null
   };
 
@@ -135,38 +146,68 @@
   }
 
   /* ------------------------------------------------------------------
-   * OPEN日未確定時のカウントダウン表示：日数部分を「∞」に置き換え、
-   * 時・分・秒のリールと区切りは非表示にする(数え上げる対象がないため)。
-   * SITE_CONFIG.OPEN_DATE が設定されたら、この関数は呼ばれなくなり
-   * 通常のスロットリール演出に自動的に戻る。
+   * 公式LINEボタン：ヘッダー/フローティング/OPEN特典セクションなど
+   * 複数箇所にある class="js-line-link" のリンク先を、SITE_CONFIG.LINE_URL
+   * の1箇所から一括で反映する。URLが変わった場合もここを直すだけでよい。
    * ---------------------------------------------------------------- */
-  function renderOpenDateUnconfirmed(reelsRoot) {
-    reelsRoot.classList.add("is-open-unconfirmed");
-    var daysPair = reelsRoot.querySelector('[data-unit="days"]');
-    if (!daysPair) return;
-    daysPair.innerHTML = "";
-    var box = document.createElement("div");
-    box.className = "digit digit--infinity";
-    var symbol = document.createElement("span");
-    symbol.className = "digit-infinity-symbol";
-    symbol.textContent = "\u221E"; // 無限大記号(文字化け防止のためUnicodeエスケープで指定)
-    box.appendChild(symbol);
-    daysPair.appendChild(box);
+  function initLineLinks() {
+    var links = document.querySelectorAll(".js-line-link");
+    links.forEach(function (link) {
+      if (SITE_CONFIG.LINE_URL) {
+        link.setAttribute("href", SITE_CONFIG.LINE_URL);
+      }
+    });
   }
 
   /* ------------------------------------------------------------------
    * カウントダウン（スロットマシン風の数字リール演出）
+   * ----------------------------------------------------------------
+   * OPEN日確定時(SITE_CONFIG.OPEN_DATEが設定されている場合):
+   *   日・時・分・秒すべてを実際の残り時間で表示する(従来どおり)。
+   *
+   * OPEN日未確定時:
+   *   ・Days は実際の残り日数を計算できないため「∞」の固定表示にする。
+   *   ・Hours/Minutes/Seconds は、実際のOPEN日とは無関係な24時間の
+   *     ループ演出として動かし続ける(「秒数だけ前のように動く」という
+   *     演出面のご要望に対応)。あくまで飾りのループであり、特定の日時に
+   *     向かっているわけではないことを、Daysの∞と案内文で明示する。
+   *   ・案内文「OPEN日確定後、正式なカウントダウンが始まります」を添える。
+   *
+   * SITE_CONFIG.OPEN_DATE に日時を設定するだけで、上記の分岐が自動的に
+   * 「OPEN日確定時」の通常表示に切り替わる。
    * ---------------------------------------------------------------- */
   function initCountdown() {
     var reelsRoot = document.getElementById("countdown-reels");
     if (!reelsRoot) return;
 
-    if (!SITE_CONFIG.OPEN_DATE) {
-      renderOpenDateUnconfirmed(reelsRoot);
-      return;
-    }
+    var openDateSet = !!SITE_CONFIG.OPEN_DATE;
+    var TARGET_DATE = openDateSet ? new Date(SITE_CONFIG.OPEN_DATE).getTime() : null;
 
-    var TARGET_DATE = new Date(SITE_CONFIG.OPEN_DATE).getTime();
+    // OPEN日未確定時：Daysは∞の固定表示にし、案内文を添える。
+    // (Days用の数字リールはこの後作らない)
+    if (!openDateSet) {
+      reelsRoot.classList.add("is-open-unconfirmed");
+
+      var daysPair = reelsRoot.querySelector('[data-unit="days"]');
+      if (daysPair) {
+        daysPair.innerHTML = "";
+        var box = document.createElement("div");
+        box.className = "digit digit--infinity";
+        var symbol = document.createElement("span");
+        symbol.className = "digit-infinity-symbol";
+        symbol.textContent = "\u221E"; // 無限大記号(文字化け防止のためUnicodeエスケープで指定)
+        box.appendChild(symbol);
+        daysPair.appendChild(box);
+      }
+
+      var countdownEl = reelsRoot.closest(".countdown");
+      if (countdownEl && !countdownEl.querySelector(".countdown-pending-note")) {
+        var note = document.createElement("p");
+        note.className = "countdown-pending-note";
+        note.textContent = "OPEN日確定後、正式なカウントダウンが始まります";
+        countdownEl.appendChild(note);
+      }
+    }
 
     var units = [
       { key: "days", digits: 2 },
@@ -178,6 +219,7 @@
     var digitEls = {}; // key -> array of { el, strip, value }
 
     units.forEach(function (unit) {
+      if (unit.key === "days" && !openDateSet) return; // Daysは∞固定のためリールを作らない
       var container = reelsRoot.querySelector('[data-unit="' + unit.key + '"]');
       if (!container) return;
       digitEls[unit.key] = [];
@@ -230,21 +272,34 @@
       });
     }
 
+    // OPEN日未確定時のHours/Minutes/Secondsループに使う周期(24時間)。
+    // 実際の日付とは無関係で、現在時刻から機械的に算出するだけの飾り。
+    var LOOP_SECONDS = 86400;
+
     function update(animate) {
-      var now = Date.now();
-      var diff = Math.max(0, TARGET_DATE - now);
+      var days, hours, minutes, seconds;
 
-      var totalSeconds = Math.floor(diff / 1000);
-      var days = Math.floor(totalSeconds / 86400);
-      var hours = Math.floor((totalSeconds % 86400) / 3600);
-      var minutes = Math.floor((totalSeconds % 3600) / 60);
-      var seconds = totalSeconds % 60;
-
-      days = Math.min(days, 99); // 表示は2桁まで
+      if (openDateSet) {
+        var now = Date.now();
+        var diff = Math.max(0, TARGET_DATE - now);
+        var totalSeconds = Math.floor(diff / 1000);
+        days = Math.min(Math.floor(totalSeconds / 86400), 99); // 表示は2桁まで
+        hours = Math.floor((totalSeconds % 86400) / 3600);
+        minutes = Math.floor((totalSeconds % 3600) / 60);
+        seconds = totalSeconds % 60;
+      } else {
+        // 実際のOPEN日とは無関係な24時間ループのダミー残り時間
+        var elapsedInLoop = Math.floor(Date.now() / 1000) % LOOP_SECONDS;
+        var remainingInLoop = LOOP_SECONDS - 1 - elapsedInLoop;
+        hours = Math.floor(remainingInLoop / 3600);
+        minutes = Math.floor((remainingInLoop % 3600) / 60);
+        seconds = remainingInLoop % 60;
+      }
 
       var values = { days: days, hours: hours, minutes: minutes, seconds: seconds };
 
       units.forEach(function (unit) {
+        if (unit.key === "days" && !openDateSet) return;
         var str = String(values[unit.key]).padStart(unit.digits, "0");
         var entries = digitEls[unit.key];
         if (!entries) return;
@@ -425,6 +480,7 @@
     initHeader();
     initFloatingCta();
     initReservationLinks();
+    initLineLinks();
     initCountdown();
     initScrollAnimations();
   });

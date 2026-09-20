@@ -80,7 +80,7 @@
     <!-- 先行配信では予約システムが未確定のため、このリンクは現状公式LINEのみに接続。
          「ご予約」の文言は予約システム確定後に復活させる(元の文言はコメントで保持)。
          <a href="[予約システムURL]" class="btn btn-primary header-cta">ご予約・LINE登録</a> -->
-    <a href="https://lin.ee/XNDaluJ" class="btn btn-primary header-cta">公式LINE登録はこちら</a>
+    <a href="https://lin.ee/XNDaluJ" class="btn btn-primary header-cta js-line-link">公式LINE登録はこちら</a>
     <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="header-nav" aria-label="メニューを開く">
       <span></span><span></span><span></span>
     </button>
@@ -112,7 +112,7 @@
 
     <div class="hero-inner">
       <div class="hero-content">
-        <p class="hero-copy" data-anim="hero-copy">高崎駅から徒歩10分。<br class="sp-only">「待ち時間なし」の新しいゴルフ体験と、<br>盛り上がる大人の社交場。</p>
+        <p class="hero-copy" data-anim="hero-copy">高崎駅から徒歩10分。<br class="sp-only">「待ち時間なし」の新しいゴルフ体験と、<br>誰もが楽しめる大人の社交場。</p>
 
         <div class="countdown" data-anim="hero-countdown" aria-label="グランドオープンまでのカウントダウン">
           <p class="countdown-label">2026年10月中旬 GRAND OPEN まで</p>
@@ -139,7 +139,7 @@
           </div>
         </div>
 
-        <a href="https://lin.ee/XNDaluJ" class="btn btn-primary btn-lg" data-anim="hero-cta">OPEN記念特典をチェック</a>
+        <a href="https://lin.ee/XNDaluJ" class="btn btn-primary btn-lg js-line-link" data-anim="hero-cta">OPEN記念特典をチェック</a>
       </div>
     </div>
   </section>
@@ -207,6 +207,7 @@
             </span>
             <h3>PLAY INFORMATION<span>利用内容</span></h3>
             <ul class="check-list">
+              <li>1名様からご利用いただけます</li>
               <li>1ドリンク制</li>
               <li>1ブース制</li>
               <li>最大6名同時プレイ可能</li>
@@ -221,7 +222,7 @@
             </span>
             <h3>FREE RENTAL<span>ゴルフクラブ</span></h3>
             <p>ゴルフクラブ無料貸し出し</p>
-            <p>手ぶらでOK</p>
+            <p>手ぶらでOK、初めての方も安心</p>
           </div>
 
           <div class="play-info-card" data-anim="stagger-item">
@@ -259,11 +260,20 @@
     <div class="container">
       <p class="eyebrow">FOR EVERYONE</p>
       <h2 class="section-title">こんな人に<span class="accent">おすすめ</span></h2>
+      <p class="section-lead">ゴルフ経験は問いません。おひとりでも、友人・カップルでも、大人数でも。KARA PREMIUM GOLF &amp; BARは、それぞれの過ごし方で気軽に楽しめるお店です。</p>
 
       <div class="recommend-grid">
         <div class="recommend-item" data-anim="stagger-item">
-          <img src="images/icon-simulator.svg" alt="ゴルフシミュレーターのアイコン" loading="lazy" width="200" height="200">
-          <h3>ゴルフをもっと<br>上達させたい人</h3>
+          <img src="images/icon-beginner.svg" alt="ゴルフ初心者向けのアイコン" loading="lazy" width="200" height="200">
+          <h3>ゴルフが初めて<br>という人も</h3>
+        </div>
+        <div class="recommend-item" data-anim="stagger-item">
+          <img src="images/icon-solo.svg" alt="おひとり様向けのアイコン" loading="lazy" width="200" height="200">
+          <h3>おひとり様も<br>気軽にどうぞ</h3>
+        </div>
+        <div class="recommend-item" data-anim="stagger-item">
+          <img src="images/icon-friends.svg" alt="友人・カップル向けのアイコン" loading="lazy" width="200" height="200">
+          <h3>友人・カップルで<br>少人数でも</h3>
         </div>
         <div class="recommend-item" data-anim="stagger-item">
           <img src="images/icon-drink.svg" alt="ドリンクのアイコン" loading="lazy" width="200" height="200">
@@ -352,7 +362,7 @@
       <h2 class="section-title campaign-title">グランドオープン特典<br><span class="accent">優待券プレゼント</span></h2>
       <p class="section-lead">オープン前にLINEご登録いただいた方限定で、お得な優待券をプレゼント！カウントダウンが0になるその日まで、ぜひお早めにご登録ください。</p>
       <div class="campaign-cta-group">
-        <a href="https://lin.ee/XNDaluJ" class="btn btn-primary btn-lg" data-anim="pulse">LINE登録して優待券をもらう</a>
+        <a href="https://lin.ee/XNDaluJ" class="btn btn-primary btn-lg js-line-link" data-anim="pulse">LINE登録して優待券をもらう</a>
         <!-- 予約システムのURLが確定するまでは js-reservation-link により
              クリックしても遷移しない(js/main.jsのSITE_CONFIG.RESERVATION_URL参照)。
              デザインは通常どおり表示する。 -->
@@ -412,7 +422,7 @@
 
 <!-- 8. フローティング予約/LINE登録ボタン -->
 <div class="floating-cta" id="floating-cta">
-  <a href="https://lin.ee/XNDaluJ" class="fab fab-line" aria-label="LINEで登録する">
+  <a href="https://lin.ee/XNDaluJ" class="fab fab-line js-line-link" aria-label="LINEで登録する">
     <span class="fab-icon" aria-hidden="true">LINE</span>
   </a>
   <!-- 予約システムのURLが確定するまでは js-reservation-link により

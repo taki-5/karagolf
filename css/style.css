@@ -570,14 +570,11 @@ a { color: inherit; text-decoration: none; }
   color: var(--color-text-dim);
 }
 
-/* OPEN日未確定時：時・分・秒のリールと区切りは非表示にし、
-   日数部分だけ「∞」ボックス(.digit--infinity)を表示する。
-   OPEN日が決まりSITE_CONFIG.OPEN_DATEが設定されると、
-   このクラス自体が付与されなくなり通常表示に戻る。 */
-.countdown-reels.is-open-unconfirmed .reel-sep,
-.countdown-reels.is-open-unconfirmed .reel-group:not(:first-child) {
-  display: none;
-}
+/* OPEN日未確定時：日数部分だけ「∞」ボックス(.digit--infinity)を表示する。
+   時・分・秒のリールと区切りはそのまま表示し、実際のOPEN日とは無関係な
+   24時間ループの演出として動き続ける(js/main.jsのinitCountdown参照)。
+   OPEN日が決まりSITE_CONFIG.OPEN_DATEが設定されると、このクラス自体が
+   付与されなくなり、日数リールを含めた通常表示に戻る。 */
 .digit--infinity {
   display: flex;
   align-items: center;
@@ -589,6 +586,14 @@ a { color: inherit; text-decoration: none; }
   font-size: clamp(1.6rem, 5vw, 2.4rem);
   color: var(--color-gold-bright);
   line-height: 1;
+}
+
+/* OPEN日未確定時、∞表示の下に添える案内文。 */
+.countdown-pending-note {
+  margin: 18px 0 0;
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+  color: var(--color-text-dim);
+  letter-spacing: 0.02em;
 }
 
 /* 予約ボタン：予約サイトURL未確定の間、js-reservation-linkにaria-disabledが付き、
@@ -776,7 +781,7 @@ a { color: inherit; text-decoration: none; }
 
 .recommend-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   text-align: center;
 }
