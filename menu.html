@@ -7,14 +7,15 @@
 <meta name="description" content="KARA PREMIUM GOLF & BAR(群馬県高崎市・高崎駅徒歩10分)のドリンク&フードメニュー。ビール・ウイスキー・サワー・焼酎・日本酒・テキーラ・シャンパン・ノンアルコール・ソフトドリンク・カクテル・フードまで、価格(税込)付きでご案内します。">
 <meta name="keywords" content="高崎 ゴルフバー メニュー,高崎 ゴルフ 飲み会,KARA PREMIUM GOLF BAR,高崎駅 バー メニュー">
 <meta name="robots" content="index,follow">
-<link rel="canonical" href="https://kara-premium-golf-bar.example.com/menu.html">
+<link rel="canonical" href="https://taki-5.github.io/karagolf/menu.html">
 
 <!-- OGP -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KARA PREMIUM GOLF & BAR">
 <meta property="og:title" content="MENU | KARA PREMIUM GOLF & BAR">
 <meta property="og:description" content="ビール・ウイスキー・サワー・焼酎・日本酒・カクテル・フードなど、KARA PREMIUM GOLF & BARのメニューをご紹介します。">
-<meta property="og:image" content="images/kara-logo.png">
+<meta property="og:image" content="https://taki-5.github.io/karagolf/images/kara-logo.png">
+<meta property="og:url" content="https://taki-5.github.io/karagolf/menu.html">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -50,19 +51,21 @@
     </a>
     <nav class="header-nav" id="header-nav" aria-label="サイト内ナビゲーション">
       <a href="menu.html" aria-current="page">MENU</a>
-      <!-- 先行配信のため一時非表示(index.html側の#simulatorセクションも非表示中)。再表示時はprelaunch-hiddenを外す -->
-      <a href="index.html#simulator" class="prelaunch-hidden">シミュレーター</a>
+      <a href="index.html#simulator">シミュレーター</a>
       <a href="index.html#play-menu">PLAY MENU</a>
+      <a href="index.html#vip">VIPブース</a>
       <a href="index.html#recommend">こんな人に</a>
       <a href="index.html#gallery">ギャラリー</a>
       <a href="index.html#party">貸切・コンペ</a>
       <a href="index.html#campaign">OPEN特典</a>
       <a href="index.html#access">アクセス</a>
     </nav>
-    <!-- 先行配信では予約システムが未確定のため、このリンクは現状公式LINEのみに接続。
-         「ご予約」の文言は予約システム確定後に復活させる(元の文言はコメントで保持)。
-         <a href="[予約システムURL]" class="btn btn-primary header-cta">ご予約・LINE登録</a> -->
-    <a href="https://lin.ee/XNDaluJ" class="btn btn-primary header-cta js-line-link">公式LINE登録はこちら</a>
+    <!-- 予約システムのURLが確定するまでは js-reservation-link により
+         クリックしても遷移しない(js/main.jsのSITE_CONFIG.RESERVATION_URL参照)。 -->
+    <div class="header-cta-group">
+      <a href="index.html#" class="btn btn-outline header-cta js-reservation-link">WEB予約</a>
+      <a href="https://lin.ee/XNDaluJ" class="btn btn-primary header-cta js-line-link">公式LINEで問い合わせ</a>
+    </div>
     <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="header-nav" aria-label="メニューを開く">
       <span></span><span></span><span></span>
     </button>
@@ -423,7 +426,7 @@
   <div class="container footer-inner">
     <img class="footer-badge" src="images/kara-logo-white-bg.png" alt="KARA PREMIUM GOLF & BAR ロゴ" width="140" height="140" loading="lazy">
     <div class="footer-logo">KARA <span>PREMIUM GOLF &amp; BAR</span></div>
-    <p>群馬県高崎市九蔵町25-1 Westin 1F ｜ JR高崎駅より徒歩10分 ｜ 2026年10月中旬 GRAND OPEN</p>
+    <p>群馬県高崎市九蔵町25-1 Westin 1F ｜ JR高崎駅より徒歩10分 ｜ 2026年10月28日 GRAND OPEN</p>
     <p class="footer-copy">&copy; 2026 KARA PREMIUM GOLF &amp; BAR</p>
   </div>
 </footer>
@@ -440,6 +443,10 @@
     <span class="fab-icon" aria-hidden="true">予約</span>
   </a>
 </div>
+
+<!-- 予約ボタン(未設定)をタップした際、titleのツールチップが出ないタッチ環境でも
+     「反応している」ことが伝わるよう表示する小さなトースト通知(js/main.jsが制御) -->
+<p class="reservation-toast" id="reservation-toast" role="status" aria-live="polite"></p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>

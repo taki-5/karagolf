@@ -32,7 +32,7 @@
   var SITE_CONFIG = {
     RESERVATION_URL: null,
     LINE_URL: "https://lin.ee/XNDaluJ",
-    OPEN_DATE: null
+    OPEN_DATE: "2026-10-28T00:00:00+09:00"
   };
 
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -102,23 +102,47 @@
 
   /* ------------------------------------------------------------------
    * フローティングCTA(LINE/予約)：ヒーロー内では本来のCTAボタンを主役にしたいので、
-   * ヒーローが画面に大きく映っている間は隠し、スクロールで離れたら表示する。
+   * ヒーローが画面に大きく映っている間は隠す。また、フッターに近づくと
+   * 住所・著作権表記などの文字に固定ボタンが重なってしまうため、
+   * フッターが画面に入っている間も同様に隠す(スクロールで離れたら再表示)。
    * IntersectionObserver非対応環境では常時表示のまま(CSS側の初期値がopacity:1のため)。
    * ---------------------------------------------------------------- */
   function initFloatingCta() {
     var cta = document.getElementById("floating-cta");
     var hero = document.getElementById("hero");
-    if (!cta || !hero || typeof IntersectionObserver === "undefined") return;
+    var footer = document.querySelector(".site-footer");
+    if (!cta || typeof IntersectionObserver === "undefined") return;
 
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          cta.classList.toggle("is-hidden", entry.intersectionRatio > 0.4);
-        });
-      },
-      { threshold: [0, 0.4, 1] }
-    );
-    observer.observe(hero);
+    var heroVisible = false;
+    var footerVisible = false;
+
+    function updateVisibility() {
+      cta.classList.toggle("is-hidden", heroVisible || footerVisible);
+    }
+
+    if (hero) {
+      new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            heroVisible = entry.intersectionRatio > 0.4;
+            updateVisibility();
+          });
+        },
+        { threshold: [0, 0.4, 1] }
+      ).observe(hero);
+    }
+
+    if (footer) {
+      new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            footerVisible = entry.isIntersecting;
+            updateVisibility();
+          });
+        },
+        { threshold: 0 }
+      ).observe(footer);
+    }
   }
 
   /* ------------------------------------------------------------------
@@ -129,6 +153,20 @@
    * ---------------------------------------------------------------- */
   function initReservationLinks() {
     var links = document.querySelectorAll(".js-reservation-link");
+    var toastMessage = "予約受付開始まで今しばらくお待ちください。お急ぎの場合は公式LINEよりお問い合わせください。";
+    var toastTimer = null;
+
+    function showReservationToast() {
+      var toast = document.getElementById("reservation-toast");
+      if (!toast) return;
+      toast.textContent = toastMessage;
+      toast.classList.add("is-visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        toast.classList.remove("is-visible");
+      }, 3200);
+    }
+
     links.forEach(function (link) {
       if (SITE_CONFIG.RESERVATION_URL) {
         link.setAttribute("href", SITE_CONFIG.RESERVATION_URL);
@@ -141,6 +179,7 @@
       link.setAttribute("title", "予約受付開始まで今しばらくお待ちください");
       link.addEventListener("click", function (e) {
         e.preventDefault();
+        showReservationToast();
       });
     });
   }
@@ -155,6 +194,72 @@
     links.forEach(function (link) {
       if (SITE_CONFIG.LINE_URL) {
         link.setAttribute("href", SITE_CONFIG.LINE_URL);
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------------
+   * 写真ライトボックス：class="js-lightbox" が付いた画像をクリック(または
+   * フォーカスしてEnter/Space)すると、背景を暗くして拡大表示する。
+   * 閉じる操作：×ボタン／オーバーレイクリック／Escキー。
+   * 外部ライブラリは使わず、バニラJSのみで実装する。
+   * ---------------------------------------------------------------- */
+  function initLightbox() {
+    var triggers = document.querySelectorAll(".js-lightbox");
+    var lightbox = document.getElementById("lightbox");
+    var lightboxImg = document.getElementById("lightbox-img");
+    var closeBtn = document.getElementById("lightbox-close");
+    if (!triggers.length || !lightbox || !lightboxImg || !closeBtn) return;
+
+    var lastFocused = null;
+    var hideImgTimer = null;
+
+    function openLightbox(trigger) {
+      clearTimeout(hideImgTimer);
+      lastFocused = trigger;
+      lightboxImg.src = trigger.currentSrc || trigger.src;
+      lightboxImg.alt = trigger.alt || "";
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      closeBtn.focus();
+    }
+
+    function closeLightbox() {
+      if (!lightbox.classList.contains("is-open")) return;
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastFocused) lastFocused.focus();
+      // フェードアウトのトランジションが終わってから画像を解放する
+      hideImgTimer = window.setTimeout(function () {
+        lightboxImg.src = "";
+      }, 320);
+    }
+
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener("click", function () {
+        openLightbox(trigger);
+      });
+      trigger.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+          e.preventDefault();
+          openLightbox(trigger);
+        }
+      });
+    });
+
+    closeBtn.addEventListener("click", closeLightbox);
+
+    // オーバーレイ(背景の暗い部分)をクリックしたときだけ閉じる。
+    // 画像自体や×ボタンのクリックはバブリングしても target が一致しないため閉じない。
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && lightbox.classList.contains("is-open")) {
+        closeLightbox();
       }
     });
   }
@@ -347,8 +452,8 @@
     var textStart = heroPhoto ? 0.45 : 0;
     heroTl
       .fromTo('[data-anim="hero-copy"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart)
-      .fromTo('[data-anim="hero-countdown"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart + 0.15)
-      .fromTo('[data-anim="hero-cta"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, textStart + 0.3);
+      .fromTo('[data-anim="hero-cta"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, textStart + 0.15)
+      .fromTo('[data-anim="hero-countdown"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart + 0.3);
 
     /* ヒーロー：背後の光条がスクロールでゆっくり回転 */
     gsap.to(".hero-burst", {
@@ -357,8 +462,8 @@
       scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1 }
     });
 
-    /* シミュレーターカード：横スライドで登場 */
-    gsap.utils.toArray(".sim-card").forEach(function (card, i) {
+    /* カードスタック(シミュレーター/VIPブース/MOMENTS共通)：横スライドで登場 */
+    gsap.utils.toArray(".card-stack__item").forEach(function (card, i) {
       gsap.fromTo(
         card,
         { opacity: 0, x: i % 2 === 0 ? -60 : 60 },
@@ -400,36 +505,7 @@
       }
     );
 
-    /* 口コミ：スタッガー */
-    gsap.fromTo(
-      ".testimonial",
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power3.out",
-        stagger: 0.12,
-        scrollTrigger: { trigger: ".testimonials", start: "top 85%" }
-      }
-    );
-
-    /* ギャラリー：スタッガーでフェードイン */
-    gsap.fromTo(
-      ".gallery-grid img",
-      { opacity: 0, y: 30, scale: 0.96 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.6,
-        ease: "power3.out",
-        stagger: 0.1,
-        scrollTrigger: { trigger: ".gallery-grid", start: "top 85%" }
-      }
-    );
-
-    /* 貸切・コンペ／アクセス：左右フェードイン */
+    /* 貸切・コンペ／アクセス／VIPブース／ゴルフをしないスペース：左右フェードイン */
     gsap.utils.toArray('[data-anim="fade-in-left"]').forEach(function (el) {
       gsap.fromTo(el, { opacity: 0, x: -50 }, {
         opacity: 1, x: 0, duration: 0.8, ease: "power3.out",
@@ -481,6 +557,7 @@
     initFloatingCta();
     initReservationLinks();
     initLineLinks();
+    initLightbox();
     initCountdown();
     initScrollAnimations();
   });
