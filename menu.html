@@ -60,8 +60,8 @@
       <a href="index.html#campaign">OPEN特典</a>
       <a href="index.html#access">アクセス</a>
     </nav>
-    <!-- 予約システムのURLが確定するまでは js-reservation-link により
-         クリックしても遷移しない(js/main.jsのSITE_CONFIG.RESERVATION_URL参照)。 -->
+    <!-- 予約リンク(href/target/rel)はjs/main.jsのSITE_CONFIG.RESERVATION_URLから
+         js-reservation-link付きの全要素へ一括反映される。 -->
     <div class="header-cta-group">
       <a href="index.html#" class="btn btn-outline header-cta js-reservation-link">WEB予約</a>
       <a href="https://lin.ee/XNDaluJ" class="btn btn-primary header-cta js-line-link">公式LINEで問い合わせ</a>
@@ -427,6 +427,10 @@
     <img class="footer-badge" src="images/kara-logo-white-bg.png" alt="KARA PREMIUM GOLF & BAR ロゴ" width="140" height="140" loading="lazy">
     <div class="footer-logo">KARA <span>PREMIUM GOLF &amp; BAR</span></div>
     <p>群馬県高崎市九蔵町25-1 Westin 1F ｜ JR高崎駅より徒歩10分 ｜ 2026年10月28日 GRAND OPEN</p>
+    <div class="cta-group">
+      <a href="index.html#" class="btn btn-primary js-reservation-link">WEB予約はこちら</a>
+      <a href="https://lin.ee/XNDaluJ" class="btn btn-outline js-line-link">公式LINEで問い合わせ</a>
+    </div>
     <p class="footer-copy">&copy; 2026 KARA PREMIUM GOLF &amp; BAR</p>
   </div>
 </footer>
@@ -436,9 +440,8 @@
   <a href="https://lin.ee/XNDaluJ" class="fab fab-line js-line-link" aria-label="LINEで登録する">
     <span class="fab-icon" aria-hidden="true">LINE</span>
   </a>
-  <!-- 予約システムのURLが確定するまでは js-reservation-link により
-       クリックしても遷移しない(js/main.jsのSITE_CONFIG.RESERVATION_URL参照)。
-       デザインは通常どおり表示する。 -->
+  <!-- 予約リンク(href/target/rel)はjs/main.jsのSITE_CONFIG.RESERVATION_URLから
+       js-reservation-link付きの全要素へ一括反映される。 -->
   <a href="#" class="fab fab-reserve js-reservation-link" aria-label="来店予約をする">
     <span class="fab-icon" aria-hidden="true">予約</span>
   </a>

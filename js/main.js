@@ -12,10 +12,12 @@
      管理する。値を設定/変更するだけで、他のコードを一切触らずに
      本来の表示・動作に戻せる。
 
-     - RESERVATION_URL: 予約サイトのURL。null(未設定)の間、予約ボタン
-       (class="js-reservation-link" が付いた要素)はクリックしても遷移しない。
-       デザインはそのまま表示される。
-       設定例: "https://reserva.be/karagolf1"
+     - RESERVATION_URL: 予約サイトのURL。確定済みのため設定済み。
+       class="js-reservation-link" が付いた要素(ヘッダー/ヒーロー/PLAY MENU/
+       VIPブース/貸切案内/アクセス/フッター/フローティングボタンなど)すべてに
+       このURLが反映され、target="_blank" rel="noopener noreferrer" で
+       新しいタブで開く。null(未設定)に戻すと、従来どおりクリックしても
+       遷移しない「準備中」表示に自動的に戻る。
 
      - LINE_URL: 公式LINEのURL。class="js-line-link" が付いた要素
        (ヘッダー・フローティングボタン・OPEN特典セクションなど)すべてに
@@ -30,7 +32,7 @@
        設定例: "2026-10-15T00:00:00+09:00"
      ========================================================================== */
   var SITE_CONFIG = {
-    RESERVATION_URL: null,
+    RESERVATION_URL: "https://reserva.be/karagolf1",
     LINE_URL: "https://lin.ee/XNDaluJ",
     OPEN_DATE: "2026-10-28T00:00:00+09:00"
   };
@@ -146,13 +148,21 @@
   }
 
   /* ------------------------------------------------------------------
-   * 予約ボタン：予約サイトのURLが未確定の間は、デザインはそのまま
-   * クリックしても遷移しないようにする(class="js-reservation-link" が
-   * 付いた要素が対象)。SITE_CONFIG.RESERVATION_URL を設定するだけで、
-   * 通常どおり遷移するようになる。
+   * 予約ボタン：class="js-reservation-link" が付いた要素すべてに、
+   * SITE_CONFIG.RESERVATION_URL を一括反映する(ヘッダー/ヒーロー/PLAY MENU/
+   * VIPブース/貸切案内/アクセス/フッター/フローティングボタン等、箇所によらず
+   * この1関数がすべてのリンク先・属性を管理する)。
+   * 外部サイトへ新しいタブで遷移するため、target="_blank" と
+   * rel="noopener noreferrer"(タブナビゲーション乗っ取り防止・リファラー非送信)
+   * を必ずセットで付与する。スクリーンリーダー利用者にも新しいタブで開くことが
+   * 伝わるよう、アクセシブルネームに案内文を補う。
+   *
+   * SITE_CONFIG.RESERVATION_URL を null に戻すと、従来どおりクリックしても
+   * 遷移しない「準備中」表示(ツールチップ+トースト通知)に自動的に戻る。
    * ---------------------------------------------------------------- */
   function initReservationLinks() {
     var links = document.querySelectorAll(".js-reservation-link");
+    var newTabHint = "(新しいタブで開きます)";
     var toastMessage = "予約受付開始まで今しばらくお待ちください。お急ぎの場合は公式LINEよりお問い合わせください。";
     var toastTimer = null;
 
@@ -167,14 +177,35 @@
       }, 3200);
     }
 
+    function addNewTabHint(link) {
+      var existingLabel = link.getAttribute("aria-label");
+      if (existingLabel) {
+        if (existingLabel.indexOf(newTabHint) === -1) {
+          link.setAttribute("aria-label", existingLabel + newTabHint);
+        }
+        return;
+      }
+      if (!link.querySelector(".js-reservation-newtab-note")) {
+        var note = document.createElement("span");
+        note.className = "sr-only js-reservation-newtab-note";
+        note.textContent = newTabHint;
+        link.appendChild(note);
+      }
+    }
+
     links.forEach(function (link) {
       if (SITE_CONFIG.RESERVATION_URL) {
         link.setAttribute("href", SITE_CONFIG.RESERVATION_URL);
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener noreferrer");
         link.removeAttribute("aria-disabled");
         link.removeAttribute("title");
+        addNewTabHint(link);
         return;
       }
       link.setAttribute("href", "#");
+      link.removeAttribute("target");
+      link.removeAttribute("rel");
       link.setAttribute("aria-disabled", "true");
       link.setAttribute("title", "予約受付開始まで今しばらくお待ちください");
       link.addEventListener("click", function (e) {
