@@ -36,8 +36,9 @@
 <link rel="stylesheet" href="css/style.css">
 
 <!-- 構造化データ(ローカルビジネス / Googleビジネスプロフィール連携を見据えて)
-     営業時間・電話番号はクライアント確認が取れていないため、未確認情報として
-     意図的に含めていない。確定次第 openingHoursSpecification / telephone を追加する。 -->
+     telephoneはGoogleビジネスプロフィール(CID: 7234989812470865582)上の掲載情報で
+     確認済み。営業時間のみ未確認のため openingHoursSpecification は未掲載のまま。
+     確定次第追加する。 -->
 
 <script type="application/ld+json">
   {
@@ -48,12 +49,13 @@
     "priceRange": "¥¥",
     "url": "https://taki-5.github.io/karagolf/",
     "image": "https://taki-5.github.io/karagolf/images/vip-booth-main.jpg",
+    "telephone": "080-1357-9508",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "九蔵町25-1 Westin 1F",
       "addressLocality": "高崎市",
       "addressRegion": "群馬県",
-      "postalCode": "370-0826",
+      "postalCode": "370-0058",
       "addressCountry": "JP"
     },
     "geo": {
@@ -471,18 +473,26 @@
           </div>
           <div>
             <dt>住所</dt>
-            <dd>群馬県高崎市九蔵町25-1 Westin 1F</dd>
+            <dd>〒370-0058 群馬県高崎市九蔵町25-1 Westin 1F</dd>
           </div>
           <div>
             <dt>アクセス</dt>
             <dd>JR高崎駅より徒歩約10分</dd>
           </div>
           <div>
+            <dt>電話番号</dt>
+            <dd><a href="tel:08013579508">080-1357-9508</a></dd>
+          </div>
+          <div>
             <dt>オープン予定</dt>
             <dd>2026年10月28日 グランドオープン</dd>
           </div>
         </dl>
-        <a href="https://www.google.com/maps/search/?api=1&query=%E7%BE%A4%E9%A6%AC%E7%9C%8C%E9%AB%98%E5%B4%8E%E5%B8%82%E4%B9%9D%E8%94%B5%E7%94%BA25-1" target="_blank" rel="noopener" class="btn btn-outline">Googleマップで見る</a>
+        <!-- 埋め込み用(/maps/embed)URLはiframe専用のため、このリンクは
+             埋め込みコードに含まれる店舗識別子(CID: 0x6467d8e6dde55eae を
+             10進数変換)から組み立てた、Googleマップ上の店舗詳細ページへの
+             直接リンクにしている。 -->
+        <a href="https://www.google.com/maps?cid=7234989812470865582" target="_blank" rel="noopener" class="btn btn-outline">Googleマップで見る</a>
         <div class="cta-group cta-group--left">
           <a href="#" class="btn btn-primary js-reservation-link">WEB予約</a>
           <a href="https://lin.ee/XNDaluJ" class="btn btn-outline js-line-link">公式LINEで問い合わせ</a>
@@ -490,9 +500,10 @@
       </div>
       <div class="access-map" data-anim="fade-in-right">
         <iframe
-          title="群馬県高崎市九蔵町25-1 Westin 1F 周辺の地図"
-          src="https://www.google.com/maps?q=%E7%BE%A4%E9%A6%AC%E7%9C%8C%E9%AB%98%E5%B4%8E%E5%B8%82%E4%B9%9D%E8%94%B5%E7%94%BA25-1&output=embed"
+          title="Googleマップ：KARA PREMIUM GOLF & BAR(群馬県高崎市九蔵町25-1 Westin 1F)"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3214.29921843329!2d139.00359257598072!3d36.3292973515075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601e8de1253f0325%3A0x6467d8e6dde55eae!2sKARA%20PREMIUM%20GOLF%26BAR!5e0!3m2!1sja!2sjp!4v1792666482460!5m2!1sja!2sjp"
           loading="lazy"
+          allowfullscreen
           referrerpolicy="no-referrer-when-downgrade">
         </iframe>
       </div>
@@ -505,7 +516,7 @@
   <div class="container footer-inner">
     <img class="footer-badge" src="images/kara-logo.png" alt="KARA PREMIUM GOLF & BAR ロゴ" width="140" height="140" loading="lazy">
     <div class="footer-logo">KARA <span>PREMIUM GOLF &amp; BAR</span></div>
-    <p>群馬県高崎市九蔵町25-1 Westin 1F ｜ JR高崎駅より徒歩10分 ｜ 2026年10月28日 GRAND OPEN</p>
+    <p>〒370-0058 群馬県高崎市九蔵町25-1 Westin 1F ｜ JR高崎駅より徒歩10分 ｜ <a href="tel:08013579508">080-1357-9508</a> ｜ 2026年10月28日 GRAND OPEN</p>
     <div class="cta-group">
       <a href="#" class="btn btn-primary js-reservation-link">WEB予約はこちら</a>
       <a href="https://lin.ee/XNDaluJ" class="btn btn-outline js-line-link">公式LINEで問い合わせ</a>
