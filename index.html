@@ -86,6 +86,12 @@
       <img class="header-logo-badge" src="images/kara-logo-white-bg.png" alt="KARA PREMIUM GOLF & BAR ロゴ" width="80" height="80" loading="eager">
       <span class="header-logo-text">KARA <span>PREMIUM GOLF &amp; BAR</span></span>
     </a>
+    <!-- 全画面幅でハンバーガーメニューに統一。ボタンはヘッダー内の見た目上の
+         位置としてnavより先に置くが、実際のパネル(#header-nav)はposition:fixedで
+         独立して開閉するため、DOM順序は視覚的な重なりに影響しない。 -->
+    <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="header-nav" aria-label="メニューを開く">
+      <span></span><span></span><span></span>
+    </button>
     <nav class="header-nav" id="header-nav" aria-label="サイト内ナビゲーション">
       <a href="menu.html">MENU</a>
       <a href="#simulator">シミュレーター</a>
@@ -94,18 +100,16 @@
       <a href="#recommend">こんな人に</a>
       <a href="#gallery">ギャラリー</a>
       <a href="#party">貸切・コンペ</a>
+      <a href="#faq">FAQ</a>
       <a href="#campaign">OPEN特典</a>
       <a href="#access">アクセス</a>
+      <!-- お問い合わせ(電話)リンクのhrefはjs/main.jsのSITE_CONFIG.PHONE_NUMBERから
+           js-phone-link付きの全要素へ一括反映される(tel:リンク)。公式LINEは変更なし。 -->
+      <div class="header-cta-group">
+        <a href="tel:08013579508" class="btn btn-outline header-cta js-phone-link">お問い合わせ</a>
+        <a href="https://lin.ee/XNDaluJ" class="btn btn-primary header-cta js-line-link">公式LINEで問い合わせ</a>
+      </div>
     </nav>
-    <!-- 予約リンク(href/target/rel)はjs/main.jsのSITE_CONFIG.RESERVATION_URLから
-         js-reservation-link付きの全要素へ一括反映される。 -->
-    <div class="header-cta-group">
-      <a href="#" class="btn btn-outline header-cta js-reservation-link">WEB予約</a>
-      <a href="https://lin.ee/XNDaluJ" class="btn btn-primary header-cta js-line-link">公式LINEで問い合わせ</a>
-    </div>
-    <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="header-nav" aria-label="メニューを開く">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </header>
 
@@ -141,33 +145,31 @@
         <p class="hero-copy" data-anim="hero-copy">高崎駅から徒歩10分。<br class="sp-only">「待ち時間なし」の新しいゴルフ体験と、<br>誰もが楽しめる大人の社交場。</p>
 
         <div class="cta-group" data-anim="hero-cta">
-          <a href="#" class="btn btn-primary btn-lg js-reservation-link">WEB予約</a>
+          <a href="tel:08013579508" class="btn btn-primary btn-lg js-phone-link">お問い合わせ</a>
           <a href="https://lin.ee/XNDaluJ" class="btn btn-outline btn-lg js-line-link">公式LINEで問い合わせ</a>
+          <a href="#" class="btn btn-outline btn-lg js-instagram-link">
+            <span class="btn-icon-group">
+              <svg class="icon-instagram" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <rect x="3" y="3" width="18" height="18" rx="5" stroke="#FFFFFF" stroke-width="2"/>
+                <circle cx="12" cy="12" r="4.2" stroke="#FFFFFF" stroke-width="2"/>
+                <circle cx="17.2" cy="6.8" r="1.1" fill="#FFFFFF"/>
+              </svg>
+              Instagram
+            </span>
+          </a>
         </div>
 
-        <div class="countdown" data-anim="hero-countdown" aria-label="グランドオープンまでのカウントダウン">
-          <p class="countdown-label">2026年10月28日 GRAND OPEN まで</p>
-          <div class="countdown-reels" id="countdown-reels">
-            <div class="reel-group">
-              <div class="digit-pair" data-unit="days"></div>
-              <span class="reel-unit">DAYS</span>
-            </div>
-            <span class="reel-sep">:</span>
-            <div class="reel-group">
-              <div class="digit-pair" data-unit="hours"></div>
-              <span class="reel-unit">HOUR</span>
-            </div>
-            <span class="reel-sep">:</span>
-            <div class="reel-group">
-              <div class="digit-pair" data-unit="minutes"></div>
-              <span class="reel-unit">MIN</span>
-            </div>
-            <span class="reel-sep">:</span>
-            <div class="reel-group">
-              <div class="digit-pair" data-unit="seconds"></div>
-              <span class="reel-unit">SEC</span>
-            </div>
-          </div>
+        <!-- 営業開始後のファーストビュー演出:カウントダウンに代えて、短い英語表記+
+             来店を歓迎する日本語メッセージ+ゴールドのグラデーション・光沢・
+             控えめな光の演出(CSSアニメーションのみ、JS追加なし)を表示する。
+             実際の営業時間は未確認のため、「営業中」等の常時ステータス表示はしない。 -->
+        <div class="open-badge" data-anim="hero-open-badge">
+          <p class="open-badge-en">
+            <span class="open-badge-line" aria-hidden="true"></span>
+            <span class="open-badge-text">GRAND OPEN</span>
+            <span class="open-badge-line" aria-hidden="true"></span>
+          </p>
+          <p class="open-badge-jp">皆さまのご来店をお待ちしております</p>
         </div>
       </div>
     </div>
@@ -235,7 +237,7 @@
       <p class="photo-disclaimer">※実際の店舗の写真です。</p>
 
       <div class="cta-group">
-        <a href="#" class="btn btn-primary btn-lg js-reservation-link">WEB予約</a>
+        <a href="tel:08013579508" class="btn btn-primary btn-lg js-phone-link">お問い合わせ</a>
         <a href="https://lin.ee/XNDaluJ" class="btn btn-outline btn-lg js-line-link">公式LINEで問い合わせ</a>
       </div>
     </div>
@@ -312,7 +314,7 @@
       </div>
 
       <div class="cta-group">
-        <a href="#" class="btn btn-primary btn-lg js-reservation-link">WEB予約</a>
+        <a href="tel:08013579508" class="btn btn-primary btn-lg js-phone-link">お問い合わせ</a>
         <a href="https://lin.ee/XNDaluJ" class="btn btn-outline btn-lg js-line-link">公式LINEで問い合わせ</a>
       </div>
     </div>
@@ -452,9 +454,9 @@
       <p class="section-lead">オープン前にLINEご登録いただいた方限定で、お得な優待券をプレゼント！カウントダウンが0になるその日まで、ぜひお早めにご登録ください。</p>
       <div class="cta-group">
         <a href="https://lin.ee/XNDaluJ" class="btn btn-primary btn-lg js-line-link" data-anim="pulse">LINE登録して優待券をもらう</a>
-        <!-- 予約リンク(href/target/rel)はjs/main.jsのSITE_CONFIG.RESERVATION_URLから
-             js-reservation-link付きの全要素へ一括反映される。 -->
-        <a href="#" class="btn btn-outline btn-lg js-reservation-link">来店予約はこちら</a>
+        <!-- お問い合わせ(電話)リンクのhrefはjs/main.jsのSITE_CONFIG.PHONE_NUMBERから
+             js-phone-link付きの全要素へ一括反映される(tel:リンク)。 -->
+        <a href="tel:08013579508" class="btn btn-outline btn-lg js-phone-link">お問い合わせ</a>
       </div>
       <p class="campaign-note">※特典内容・配布数は予告なく変更となる場合がございます。</p>
     </div>
@@ -494,7 +496,7 @@
              直接リンクにしている。 -->
         <a href="https://www.google.com/maps?cid=7234989812470865582" target="_blank" rel="noopener" class="btn btn-outline">Googleマップで見る</a>
         <div class="cta-group cta-group--left">
-          <a href="#" class="btn btn-primary js-reservation-link">WEB予約</a>
+          <a href="tel:08013579508" class="btn btn-primary js-phone-link">お問い合わせ</a>
           <a href="https://lin.ee/XNDaluJ" class="btn btn-outline js-line-link">公式LINEで問い合わせ</a>
         </div>
       </div>
@@ -518,7 +520,7 @@
     <div class="footer-logo">KARA <span>PREMIUM GOLF &amp; BAR</span></div>
     <p>〒370-0058 群馬県高崎市九蔵町25-1 Westin 1F ｜ JR高崎駅より徒歩10分 ｜ <a href="tel:08013579508">080-1357-9508</a> ｜ 2026年10月28日 GRAND OPEN</p>
     <div class="cta-group">
-      <a href="#" class="btn btn-primary js-reservation-link">WEB予約はこちら</a>
+      <a href="tel:08013579508" class="btn btn-primary js-phone-link">お問い合わせ</a>
       <a href="https://lin.ee/XNDaluJ" class="btn btn-outline js-line-link">公式LINEで問い合わせ</a>
     </div>
     <p class="footer-copy">&copy; 2026 KARA PREMIUM GOLF &amp; BAR</p>
@@ -530,16 +532,20 @@
   <a href="https://lin.ee/XNDaluJ" class="fab fab-line js-line-link" aria-label="LINEで登録する">
     <span class="fab-icon" aria-hidden="true">LINE</span>
   </a>
-  <!-- 予約リンク(href/target/rel)はjs/main.jsのSITE_CONFIG.RESERVATION_URLから
-       js-reservation-link付きの全要素へ一括反映される。 -->
-  <a href="#" class="fab fab-reserve js-reservation-link" aria-label="来店予約をする">
-    <span class="fab-icon" aria-hidden="true">予約</span>
+  <!-- Instagramリンク(href/target/rel)はjs/main.jsのSITE_CONFIG.INSTAGRAM_URLから
+       js-instagram-link付きの要素へ反映される(URL未確認の間は確認中表示)。 -->
+  <a href="#" class="fab fab-instagram js-instagram-link" aria-label="公式Instagramを見る">
+    <svg class="icon-instagram" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+      <rect x="3" y="3" width="18" height="18" rx="5" stroke="#FFFFFF" stroke-width="2"/>
+      <circle cx="12" cy="12" r="4.2" stroke="#FFFFFF" stroke-width="2"/>
+      <circle cx="17.2" cy="6.8" r="1.1" fill="#FFFFFF"/>
+    </svg>
   </a>
 </div>
 
 <!-- 予約ボタン(未設定)をタップした際、titleのツールチップが出ないタッチ環境でも
      「反応している」ことが伝わるよう表示する小さなトースト通知(js/main.jsが制御) -->
-<p class="reservation-toast" id="reservation-toast" role="status" aria-live="polite"></p>
+<p class="link-pending-toast" id="link-pending-toast" role="status" aria-live="polite"></p>
 
 <!-- 写真ライトボックス：class="js-lightbox" が付いた画像をクリック/Enter/Spaceで開く。
      閉じる操作：×ボタン／オーバーレイクリック／Escキー(js/main.jsが制御)。 -->

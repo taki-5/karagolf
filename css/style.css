@@ -43,7 +43,7 @@ img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; text-decoration: none; }
 
 .container {
-  max-width: 1140px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -141,7 +141,7 @@ a { color: inherit; text-decoration: none; }
 
 .section {
   position: relative;
-  padding: 120px 0;
+  padding: 140px 0;
 }
 
 /* ---------- Buttons ---------- */
@@ -230,7 +230,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .header-inner {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
   height: 100%;
   padding: 0 24px;
@@ -264,33 +264,62 @@ a { color: inherit; text-decoration: none; }
   display: block;
 }
 
+/* ハンバーガーメニュー：全画面幅で統一(PC/タブレット/スマートフォン共通)。
+   ヘッダー本体は常にロゴ+ハンバーガーボタンのみのシンプルな構成にし、
+   リンク一覧とお問い合わせ導線はこの開閉パネルにまとめる。 */
 .header-nav {
+  position: fixed;
+  top: var(--header-height);
+  left: 0; right: 0;
+  width: auto;
+  max-height: calc(100svh - var(--header-height));
+  overflow-y: auto;
+  background: rgba(11, 11, 12, 0.97);
+  backdrop-filter: blur(10px);
   display: flex;
-  gap: 22px;
-  margin-left: 12px;
-  flex: 1;
+  flex-direction: column;
+  padding: 28px 24px;
+  gap: 20px;
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.header-nav.is-open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 .header-nav a {
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--color-text);
   position: relative;
-  padding: 4px 0;
+  padding: 8px 2px;
 }
 .header-nav a::after {
   content: "";
   position: absolute;
-  left: 0; bottom: -2px;
+  left: 2px; bottom: 2px;
   width: 0; height: 2px;
   background: var(--color-gold-bright);
   transition: width 0.25s ease;
 }
-.header-nav a:hover::after { width: 100%; }
+.header-nav a:hover::after { width: 32px; }
 
-.header-cta-group { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+.header-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
 .header-cta { padding: 12px 24px; font-size: 0.85rem; white-space: nowrap; }
 
 .nav-toggle {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 5px;
@@ -318,6 +347,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
   padding-top: var(--header-height);
 }
@@ -345,7 +375,9 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 0 20px;
+  /* 下パディングは、ロゴ登場アニメーションの最終スケール(1.14倍)分を
+     見込んで少し大きめに取っている。 */
+  padding: 32px 0 34px;
 }
 
 /* キャラクターの背後で回転する光条(コミック風の「ドーン」演出)
@@ -389,7 +421,7 @@ a { color: inherit; text-decoration: none; }
 .hero-photo-wrap {
   position: relative;
   z-index: 2;
-  width: min(340px, 66vw);
+  width: min(320px, 68vw);
   aspect-ratio: 1 / 1;
   /* ロゴがアルファ透過PNGのため、drop-shadowは各文字・図形の輪郭にも
      個別にかかる。ぼやけた発光に見えないよう、ぼかし半径を抑えた
@@ -513,18 +545,23 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-content {
-  padding: 8px 20px 64px;
+  padding: 16px 22px 72px;
   max-width: 780px;
   margin: 0 auto;
 }
+
+/* ヒーローのCTAからGRAND OPENまでの間隔(32〜48px目安)。.cta-groupは他セクション
+   (PLAY MENU/アクセス/OPEN特典/フッター)でも使う汎用クラスのため、
+   ここでは#heroに限定して上書きし、他セクションの余白には影響させない。 */
+#hero .cta-group { margin: 0 0 36px; }
 
 /* ロゴ画像自体が「KARA PREMIUM GOLF & BAR」を明確に表しているため、
    同じブランド名をテキストで重複表示しない。ロゴの直後にキャッチコピーへ続く。 */
 .hero-copy {
   max-width: 44em;
-  margin: 0 auto 44px;
+  margin: 0 auto 30px;
   font-size: clamp(1rem, 2vw, 1.2rem);
-  line-height: 1.8;
+  line-height: 1.9;
   color: var(--color-text-dim);
   /* 折り返しが発生する幅では、なるべく行の長さが偏らない自然な位置で
      改行されるようにする(対応ブラウザのみ。非対応でも通常の折り返しに
@@ -532,103 +569,123 @@ a { color: inherit; text-decoration: none; }
   text-wrap: balance;
 }
 
-.countdown { margin-bottom: 44px; }
-.countdown-label {
-  font-family: var(--font-heading);
-  color: var(--color-gold);
-  letter-spacing: 0.05em;
-  margin-bottom: 16px;
-  font-size: clamp(0.85rem, 1.6vw, 1rem);
-}
+/* ---------- オープン告知バッジ(旧カウントダウン跡地) ----------
+   営業開始後は「いつまで待つか」ではなく「今すぐ来店したくなる」ことを重視し、
+   短い英語表記+日本語メッセージ+控えめなゴールドの発光に置き換えている。
+   「営業中」のような常時ステータス表示はしない(実際の営業時間が未確認のため)。 */
+.open-badge { margin-bottom: 0; text-align: center; }
 
-.countdown-reels {
+/* GRAND OPEN:左右の細いゴールドラインで文字を挟み、背後に控えめな
+   グローを置く。ライン・グロー・シマー・パルスいずれも装飾過多に
+   ならない範囲に留め、高級ホテルのサイネージのような品格を狙う。 */
+.open-badge-en {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: clamp(10px, 3vw, 20px);
+  margin: 0 0 24px;
 }
-
-.reel-group { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-
-.digit-pair { display: flex; gap: 4px; }
-
-.digit {
-  position: relative;
-  width: clamp(34px, 8vw, 52px);
-  height: clamp(46px, 11vw, 70px);
-  overflow: hidden;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), 0 4px 14px rgba(0,0,0,0.35);
-}
-.digit::after {
+/* 文字の背後に置く控えめなゴールドのグロー */
+.open-badge-en::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.35), transparent 30%, transparent 70%, rgba(0,0,0,0.35));
+  inset: -28px -20px;
+  background: radial-gradient(ellipse 65% 70% at 50% 50%, rgba(242, 201, 76, 0.22), transparent 72%);
+  z-index: -1;
   pointer-events: none;
 }
 
-.digit-strip {
-  display: flex;
-  flex-direction: column;
-  will-change: transform;
+.open-badge-line {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 14px;
+  max-width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold) 70%, var(--color-gold-bright));
 }
-.digit-strip span {
-  height: clamp(46px, 11vw, 70px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-heading);
-  font-size: clamp(1.6rem, 5vw, 2.4rem);
-  color: var(--color-gold-bright);
+.open-badge-line:last-child {
+  background: linear-gradient(90deg, var(--color-gold-bright), var(--color-gold) 30%, transparent);
 }
+/* ラインの文字側の端に小さな光のアクセント(ひし形)を添える */
+.open-badge-line::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  background: var(--color-gold-bright);
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(242, 201, 76, 0.85);
+  transform: translateY(-50%) rotate(45deg);
+}
+.open-badge-line:first-child::after { right: -3px; }
+.open-badge-line:last-child::after { left: -3px; }
 
-.reel-sep {
+.open-badge-text {
+  position: relative;
+  display: inline-block;
   font-family: var(--font-heading);
-  font-size: clamp(1.4rem, 4vw, 2rem);
-  color: var(--color-gold);
-  margin-bottom: 22px;
-}
-
-.reel-unit {
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  color: var(--color-text-dim);
-}
-
-/* OPEN日未確定時：日数部分だけ「∞」ボックス(.digit--infinity)を表示する。
-   時・分・秒のリールと区切りはそのまま表示し、実際のOPEN日とは無関係な
-   24時間ループの演出として動き続ける(js/main.jsのinitCountdown参照)。
-   OPEN日が決まりSITE_CONFIG.OPEN_DATEが設定されると、このクラス自体が
-   付与されなくなり、日数リールを含めた通常表示に戻る。 */
-.digit--infinity {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: calc(2 * clamp(34px, 8vw, 52px) + 4px);
-}
-.digit-infinity-symbol {
-  font-family: var(--font-heading);
-  font-size: clamp(1.6rem, 5vw, 2.4rem);
-  color: var(--color-gold-bright);
+  font-size: clamp(1.9rem, 8vw, 3.1rem);
+  font-weight: 400;
+  letter-spacing: clamp(0.08em, 2vw, 0.2em);
   line-height: 1;
+  white-space: nowrap;
+  color: var(--color-gold-bright);
+  /* 文字の立体感(下方向の暗い陰影)と周囲への光の滲み(グロー)を重ねる。
+     background-clip:textが効かない環境でも、この色と陰影だけで
+     ゴールドの文字として読めるようフォールバックにしている。 */
+  text-shadow: 0 2px 1px rgba(0, 0, 0, 0.45), 0 0 18px rgba(242, 201, 76, 0.4);
+  animation: openBadgeGlow 4s ease-in-out infinite;
+}
+/* 明るい金色から深い金色へのグラデーションを文字に適用し、さらに
+   ハイライト帯をゆっくり横切らせて上品な光沢(シマー)を出す。
+   対応ブラウザのみ有効化し、非対応環境ではフォールバック色の
+   ソリッドなゴールド文字のまま表示される。 */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .open-badge-text {
+    background: linear-gradient(
+      100deg,
+      var(--color-gold) 20%,
+      var(--color-gold-bright) 40%,
+      #fff6d9 50%,
+      var(--color-gold-bright) 60%,
+      var(--color-gold) 80%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: openBadgeGlow 4s ease-in-out infinite, openBadgeShimmer 6s ease-in-out infinite;
+  }
 }
 
-/* OPEN日未確定時、∞表示の下に添える案内文。 */
-.countdown-pending-note {
-  margin: 18px 0 0;
-  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+.open-badge-jp {
+  margin: 0;
+  font-size: clamp(0.92rem, 1.8vw, 1.05rem);
   color: var(--color-text-dim);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
-/* 予約ボタン：予約サイトURL未確定の間、js-reservation-linkにaria-disabledが付き、
+/* ゆっくり(4秒周期)発光が広がる控えめな演出。点滅・移動は行わない。
+   prefers-reduced-motion環境ではサイト共通ルールによりduration 0.001msに
+   短縮され、実質アニメーションなしの固定表示になる。 */
+@keyframes openBadgeGlow {
+  0%, 100% { text-shadow: 0 2px 1px rgba(0, 0, 0, 0.45), 0 0 14px rgba(242, 201, 76, 0.32); }
+  50% { text-shadow: 0 2px 1px rgba(0, 0, 0, 0.45), 0 0 30px rgba(242, 201, 76, 0.7); }
+}
+
+/* ゴールドのハイライト帯が文字の上をゆっくり横切る、上品なシマー演出。
+   明滅や点滅ではなく、帯がゆっくり移動するだけの控えめな動き。 */
+@keyframes openBadgeShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -40% 0; }
+}
+
+/* リンク先未確定のボタン(例：Instagram URL確認中)はaria-disabledが付き、
    クリックしても遷移しない。デザインは変えず、ホバー時のカーソルだけで
    「今は押せない」ことをさりげなく示す。 */
-.js-reservation-link[aria-disabled="true"] {
+a[aria-disabled="true"] {
   cursor: not-allowed;
 }
 
@@ -1001,7 +1058,7 @@ a { color: inherit; text-decoration: none; }
 /* ---------- 予約ボタン(未設定)タップ時のフィードバック ----------
    titleのネイティブツールチップはタッチ操作では表示されないため、
    タップ後にも「反応している」ことが分かるよう小さなトーストを表示する。 */
-.reservation-toast {
+.link-pending-toast {
   position: fixed;
   left: 50%;
   bottom: 110px;
@@ -1020,7 +1077,7 @@ a { color: inherit; text-decoration: none; }
   pointer-events: none;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
-.reservation-toast.is-visible {
+.link-pending-toast.is-visible {
   opacity: 1;
   transform: translate(-50%, 0);
 }
@@ -1090,14 +1147,28 @@ a { color: inherit; text-decoration: none; }
 }
 .fab:hover { transform: scale(1.1) rotate(-4deg); }
 .fab-line { background: var(--color-green); color: #06210f; }
-/* 予約=メインCTA。ひと回り大きくゴールドのグラデーションで存在感を出す */
-.fab-reserve {
+/* Instagram=フローティングCTAのメイン導線。ひと回り大きくゴールドのグラデーションで存在感を出す */
+.fab-instagram {
   width: 68px;
   height: 68px;
   font-size: 0.8rem;
   background: linear-gradient(135deg, var(--color-gold-bright), var(--color-gold));
   color: #1a1305;
   box-shadow: 0 0 0 1px rgba(255, 236, 179, 0.4), 0 10px 26px rgba(0,0,0,0.55);
+}
+
+/* Instagramロゴアイコン(白)。フローティングボタン内ではやや大きく、
+   テキストボタン(.btn内)では文字と並ぶ高さに揃える。 */
+.icon-instagram {
+  display: block;
+  flex-shrink: 0;
+}
+.fab-instagram .icon-instagram { width: 28px; height: 28px; }
+.btn .icon-instagram { width: 18px; height: 18px; }
+.btn-icon-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* ---------- Reveal animation base states ----------
@@ -1123,29 +1194,6 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* ヘッダーナビはタブレット幅でも窮屈になるため760pxより広い1024pxで切り替える */
-@media (max-width: 1024px) {
-  .header-nav {
-    position: fixed;
-    top: var(--header-height);
-    left: 0; right: 0;
-    width: auto;
-    flex: none;
-    margin-left: 0;
-    background: rgba(11,11,12,0.97);
-    backdrop-filter: blur(10px);
-    flex-direction: column;
-    padding: 24px;
-    gap: 18px;
-    transform: translateY(-120%);
-    opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-  }
-  .header-nav.is-open { transform: translateY(0); opacity: 1; }
-  .header-cta-group { display: none; }
-  .nav-toggle { display: flex; }
-}
-
 @media (max-width: 760px) {
   .sp-only { display: inline; }
   .section { padding: 80px 0; }
@@ -1153,9 +1201,8 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 520px) {
   .recommend-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .reel-sep { margin-bottom: 18px; }
   .fab { width: 52px; height: 52px; font-size: 0.68rem; }
-  .fab-reserve { width: 60px; height: 60px; font-size: 0.74rem; }
+  .fab-instagram { width: 60px; height: 60px; font-size: 0.74rem; }
 }
 
 @media (min-width: 640px) {
@@ -1168,28 +1215,35 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- Hero: PC表示ではロゴを主役として大きく、余白をたっぷり取る ----------
-   スマートフォン側の値(基本ルール)は一切変更していない。 */
+   スマートフォン側の値(基本ルール)は一切変更していない。コンテンツが画面に
+   収まりきらない場合は(min-height任せで)自然に縦へ伸びることを許容し、
+   無理に詰め込んでボタンや文字が窮屈にならないようにしている。 */
 @media (min-width: 1024px) {
-  /* 実店舗写真+ブランド名コピー+CTAが一般的なノートPCの画面高さ(720px前後)に
-     収まるよう、ロゴのサイズと上下の余白を控えめにしている
-     (以前は500px/32vwだったが、WEB予約/LINE CTAが画面外に落ちていたため調整)。 */
-  .hero-photo-wrap { width: min(380px, 24vw); }
+  /* ロゴをファーストビューの主役として明確に大きくする。
+     640px幅の440pxから連続的に大きくなるよう46vwで繋ぐ(34vwだと
+     1024px到達時に440pxより一時的に小さくなってしまうため)。 */
+  .hero-photo-wrap { width: min(520px, 46vw); }
 
-  .hero-photo-stage { padding: 32px 0 24px; }
+  /* 下パディングは、ロゴ登場アニメーションの最終スケール(1.14倍)で
+     見た目の高さが増える分を見込んで、CSS上の値を実際の目標余白より
+     大きめに取っている。 */
+  .hero-photo-stage { padding: 56px 0 76px; }
 
-  .hero-content { padding: 0 20px 0; }
+  /* お問い合わせ/公式LINE/Instagramの3ボタンがPCで1列に整然と並ぶよう、
+     ヒーロー本文だけ基本の780pxより少し広く取る(hero-copy自体は
+     引き続きmax-width:44emで読みやすい行長を保つ)。 */
+  .hero-content { max-width: 980px; padding: 0 20px 96px; }
 
   .hero-copy {
-    margin-bottom: 20px;
-    font-size: clamp(1.1rem, 1.4vw, 1.375rem);
+    margin: 0 auto 36px;
+    font-size: clamp(1.15rem, 1.5vw, 1.4rem);
   }
 
-  /* CTA→カウントダウンの間隔だけ少し詰め、CTAが画面内に自然に収まるようにする。
-     .cta-groupは他セクション(PLAY MENU/アクセス/OPEN特典)でも使う汎用クラスのため、
-     ここでは#heroに限定して上書きし、他セクションの余白には影響させない。 */
-  #hero .cta-group { margin: 0 0 16px; }
-  .countdown { margin-bottom: 8px; }
-  .countdown-label { margin-bottom: 14px; }
+  /* ボタン→GRAND OPENの間隔(32〜48px目安)。.cta-groupは他セクションでも使う
+     汎用クラスのため、ここでは#heroに限定して上書きする。 */
+  #hero .cta-group { gap: 22px; margin: 0 0 44px; }
+
+  .open-badge-en { margin-bottom: 26px; }
 }
 
 /* ==========================================================================

@@ -8,33 +8,30 @@
   /* ==========================================================================
      サイト設定(先行配信 暫定値)
      ----------------------------------------------------------------------
-     予約サイトのURL・公式LINEのURL・グランドオープン日時をここでまとめて
+     電話番号・公式LINE/InstagramのURL・グランドオープン日時をここでまとめて
      管理する。値を設定/変更するだけで、他のコードを一切触らずに
      本来の表示・動作に戻せる。
 
-     - RESERVATION_URL: 予約サイトのURL。確定済みのため設定済み。
-       class="js-reservation-link" が付いた要素(ヘッダー/ヒーロー/PLAY MENU/
-       VIPブース/貸切案内/アクセス/フッター/フローティングボタンなど)すべてに
-       このURLが反映され、target="_blank" rel="noopener noreferrer" で
-       新しいタブで開く。null(未設定)に戻すと、従来どおりクリックしても
-       遷移しない「準備中」表示に自動的に戻る。
+     - PHONE_NUMBER: 店舗の電話番号(Googleビジネスプロフィール掲載情報で確認済み)。
+       class="js-phone-link" が付いた要素(ヘッダー/ヒーロー/PLAY MENU/
+       VIPブース/貸切案内/アクセス/フッターなど、旧「WEB予約」ボタン)すべてに
+       tel:リンクとして反映される。Web予約サイト(reserva.be)での受付は
+       一旦停止し、電話での直接のお問い合わせに切り替えている。
+
+     - INSTAGRAM_URL: 公式InstagramアカウントのURL(確認済み)。
+       class="js-instagram-link" が付いた要素(ヒーロー/フローティングボタンなど)
+       すべてにこのURLが反映され、target="_blank" rel="noopener noreferrer" で
+       新しいタブで開く。null に戻すと、従来どおりクリックしても遷移しない
+       「確認中」表示に自動的に戻る。
 
      - LINE_URL: 公式LINEのURL。class="js-line-link" が付いた要素
        (ヘッダー・フローティングボタン・OPEN特典セクションなど)すべてに
-       このURLが反映される。
-       ※現在の値は本プロジェクトに元々設定されていたものをそのまま
-       引き継いでいるだけで、クライアント確認済みの正式URLかどうかは
-       未確認。差し替えが必要な場合はこの1箇所を変更すればよい。
-
-     - OPEN_DATE: グランドオープン日時(ISO 8601形式)。null(未設定)の間、
-       カウントダウンは「OPEN日確定後、カウントダウンが始まります」という
-       案内表示になる(誤解を招く数字は表示しない)。
-       設定例: "2026-10-15T00:00:00+09:00"
+       このURLが反映される。今回の変更では一切変更していない。
      ========================================================================== */
   var SITE_CONFIG = {
-    RESERVATION_URL: "https://reserva.be/karagolf1",
-    LINE_URL: "https://lin.ee/XNDaluJ",
-    OPEN_DATE: "2026-10-28T00:00:00+09:00"
+    PHONE_NUMBER: "080-1357-9508",
+    INSTAGRAM_URL: "https://www.instagram.com/karasawa811?cplk=MXkxa2plcng3aHU0cQ==",
+    LINE_URL: "https://lin.ee/XNDaluJ"
   };
 
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -76,7 +73,7 @@
   }
 
   /* ------------------------------------------------------------------
-   * 固定ヘッダー：スクロールで背景付与 / モバイルメニュー
+   * 固定ヘッダー：スクロールで背景付与 / ハンバーガーメニュー(全画面幅共通)
    * ---------------------------------------------------------------- */
   function initHeader() {
     var header = document.getElementById("site-header");
@@ -89,16 +86,54 @@
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
+    function isOpen() {
+      return nav.classList.contains("is-open");
+    }
+
+    function openNav() {
+      nav.classList.add("is-open");
+      toggle.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+      // 開いた瞬間に最初のリンクへフォーカスし、キーボード操作で
+      // 「今どこが操作対象か」が分かるようにする。
+      var firstLink = nav.querySelector("a");
+      if (firstLink) firstLink.focus();
+    }
+
+    function closeNav(options) {
+      if (!isOpen()) return;
+      nav.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      if (options && options.returnFocus) toggle.focus();
+    }
+
     toggle.addEventListener("click", function () {
-      var isOpen = nav.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", String(isOpen));
+      if (isOpen()) {
+        closeNav({ returnFocus: true });
+      } else {
+        openNav();
+      }
     });
 
     nav.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
-        nav.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
+        closeNav();
       });
+    });
+
+    // メニュー外(背景)をクリック/タップしたときも閉じる。
+    document.addEventListener("click", function (e) {
+      if (!isOpen()) return;
+      if (nav.contains(e.target) || toggle.contains(e.target)) return;
+      closeNav();
+    });
+
+    // Escapeキーで閉じ、ハンバーガーボタンへフォーカスを戻す。
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && isOpen()) {
+        closeNav({ returnFocus: true });
+      }
     });
   }
 
@@ -148,34 +183,54 @@
   }
 
   /* ------------------------------------------------------------------
-   * 予約ボタン：class="js-reservation-link" が付いた要素すべてに、
-   * SITE_CONFIG.RESERVATION_URL を一括反映する(ヘッダー/ヒーロー/PLAY MENU/
-   * VIPブース/貸切案内/アクセス/フッター/フローティングボタン等、箇所によらず
-   * この1関数がすべてのリンク先・属性を管理する)。
-   * 外部サイトへ新しいタブで遷移するため、target="_blank" と
-   * rel="noopener noreferrer"(タブナビゲーション乗っ取り防止・リファラー非送信)
-   * を必ずセットで付与する。スクリーンリーダー利用者にも新しいタブで開くことが
-   * 伝わるよう、アクセシブルネームに案内文を補う。
-   *
-   * SITE_CONFIG.RESERVATION_URL を null に戻すと、従来どおりクリックしても
-   * 遷移しない「準備中」表示(ツールチップ+トースト通知)に自動的に戻る。
+   * リンク未確定時の案内トースト(titleのネイティブツールチップはタッチ操作では
+   * 表示されないため)。Instagram URL確認中など、複数箇所で使い回す共通部品。
    * ---------------------------------------------------------------- */
-  function initReservationLinks() {
-    var links = document.querySelectorAll(".js-reservation-link");
-    var newTabHint = "(新しいタブで開きます)";
-    var toastMessage = "予約受付開始まで今しばらくお待ちください。お急ぎの場合は公式LINEよりお問い合わせください。";
-    var toastTimer = null;
+  var pendingToastTimer = null;
+  function showPendingToast(message) {
+    var toast = document.getElementById("link-pending-toast");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    clearTimeout(pendingToastTimer);
+    pendingToastTimer = window.setTimeout(function () {
+      toast.classList.remove("is-visible");
+    }, 3200);
+  }
 
-    function showReservationToast() {
-      var toast = document.getElementById("reservation-toast");
-      if (!toast) return;
-      toast.textContent = toastMessage;
-      toast.classList.add("is-visible");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(function () {
-        toast.classList.remove("is-visible");
-      }, 3200);
-    }
+  /* ------------------------------------------------------------------
+   * お問い合わせ(電話)ボタン：class="js-phone-link" が付いた要素すべてに、
+   * SITE_CONFIG.PHONE_NUMBER から作ったtel:リンクを一括反映する
+   * (ヘッダー/ヒーロー/PLAY MENU/VIPブース/貸切案内/アクセス/フッター等、
+   * 旧「WEB予約」ボタン。Web予約サイトでの受付は一旦停止している)。
+   * ---------------------------------------------------------------- */
+  function initPhoneLinks() {
+    var links = document.querySelectorAll(".js-phone-link");
+    if (!links.length) return;
+    var telHref = "tel:" + SITE_CONFIG.PHONE_NUMBER.replace(/[^0-9+]/g, "");
+    links.forEach(function (link) {
+      link.setAttribute("href", telHref);
+      link.removeAttribute("target");
+      link.removeAttribute("rel");
+      link.removeAttribute("aria-disabled");
+      link.removeAttribute("title");
+    });
+  }
+
+  /* ------------------------------------------------------------------
+   * Instagramボタン：class="js-instagram-link" が付いた要素すべてに、
+   * SITE_CONFIG.INSTAGRAM_URL を一括反映する(フローティングボタン等)。
+   * 外部サイトへ新しいタブで遷移するため、target="_blank" と
+   * rel="noopener noreferrer" を必ずセットで付与する。
+   *
+   * SITE_CONFIG.INSTAGRAM_URL が null(公式アカウントURL未確認)の間は、
+   * クリックしても遷移しない「確認中」表示にする。URLが判明したら
+   * この1箇所を設定するだけで自動的に有効化される。
+   * ---------------------------------------------------------------- */
+  function initInstagramLinks() {
+    var links = document.querySelectorAll(".js-instagram-link");
+    if (!links.length) return;
+    var newTabHint = "(新しいタブで開きます)";
 
     function addNewTabHint(link) {
       var existingLabel = link.getAttribute("aria-label");
@@ -185,17 +240,17 @@
         }
         return;
       }
-      if (!link.querySelector(".js-reservation-newtab-note")) {
+      if (!link.querySelector(".js-newtab-note")) {
         var note = document.createElement("span");
-        note.className = "sr-only js-reservation-newtab-note";
+        note.className = "sr-only js-newtab-note";
         note.textContent = newTabHint;
         link.appendChild(note);
       }
     }
 
     links.forEach(function (link) {
-      if (SITE_CONFIG.RESERVATION_URL) {
-        link.setAttribute("href", SITE_CONFIG.RESERVATION_URL);
+      if (SITE_CONFIG.INSTAGRAM_URL) {
+        link.setAttribute("href", SITE_CONFIG.INSTAGRAM_URL);
         link.setAttribute("target", "_blank");
         link.setAttribute("rel", "noopener noreferrer");
         link.removeAttribute("aria-disabled");
@@ -207,10 +262,10 @@
       link.removeAttribute("target");
       link.removeAttribute("rel");
       link.setAttribute("aria-disabled", "true");
-      link.setAttribute("title", "予約受付開始まで今しばらくお待ちください");
+      link.setAttribute("title", "Instagramのリンク先は確認中です");
       link.addEventListener("click", function (e) {
         e.preventDefault();
-        showReservationToast();
+        showPendingToast("Instagramのリンク先は確認でき次第、公開いたします。お急ぎの場合はお電話または公式LINEよりお問い合わせください。");
       });
     });
   }
@@ -296,166 +351,6 @@
   }
 
   /* ------------------------------------------------------------------
-   * カウントダウン（スロットマシン風の数字リール演出）
-   * ----------------------------------------------------------------
-   * OPEN日確定時(SITE_CONFIG.OPEN_DATEが設定されている場合):
-   *   日・時・分・秒すべてを実際の残り時間で表示する(従来どおり)。
-   *
-   * OPEN日未確定時:
-   *   ・Days は実際の残り日数を計算できないため「∞」の固定表示にする。
-   *   ・Hours/Minutes/Seconds は、実際のOPEN日とは無関係な24時間の
-   *     ループ演出として動かし続ける(「秒数だけ前のように動く」という
-   *     演出面のご要望に対応)。あくまで飾りのループであり、特定の日時に
-   *     向かっているわけではないことを、Daysの∞と案内文で明示する。
-   *   ・案内文「OPEN日確定後、正式なカウントダウンが始まります」を添える。
-   *
-   * SITE_CONFIG.OPEN_DATE に日時を設定するだけで、上記の分岐が自動的に
-   * 「OPEN日確定時」の通常表示に切り替わる。
-   * ---------------------------------------------------------------- */
-  function initCountdown() {
-    var reelsRoot = document.getElementById("countdown-reels");
-    if (!reelsRoot) return;
-
-    var openDateSet = !!SITE_CONFIG.OPEN_DATE;
-    var TARGET_DATE = openDateSet ? new Date(SITE_CONFIG.OPEN_DATE).getTime() : null;
-
-    // OPEN日未確定時：Daysは∞の固定表示にし、案内文を添える。
-    // (Days用の数字リールはこの後作らない)
-    if (!openDateSet) {
-      reelsRoot.classList.add("is-open-unconfirmed");
-
-      var daysPair = reelsRoot.querySelector('[data-unit="days"]');
-      if (daysPair) {
-        daysPair.innerHTML = "";
-        var box = document.createElement("div");
-        box.className = "digit digit--infinity";
-        var symbol = document.createElement("span");
-        symbol.className = "digit-infinity-symbol";
-        symbol.textContent = "\u221E"; // 無限大記号(文字化け防止のためUnicodeエスケープで指定)
-        box.appendChild(symbol);
-        daysPair.appendChild(box);
-      }
-
-      var countdownEl = reelsRoot.closest(".countdown");
-      if (countdownEl && !countdownEl.querySelector(".countdown-pending-note")) {
-        var note = document.createElement("p");
-        note.className = "countdown-pending-note";
-        note.textContent = "OPEN日確定後、正式なカウントダウンが始まります";
-        countdownEl.appendChild(note);
-      }
-    }
-
-    var units = [
-      { key: "days", digits: 2 },
-      { key: "hours", digits: 2 },
-      { key: "minutes", digits: 2 },
-      { key: "seconds", digits: 2 }
-    ];
-
-    var digitEls = {}; // key -> array of { el, strip, value }
-
-    units.forEach(function (unit) {
-      if (unit.key === "days" && !openDateSet) return; // Daysは∞固定のためリールを作らない
-      var container = reelsRoot.querySelector('[data-unit="' + unit.key + '"]');
-      if (!container) return;
-      digitEls[unit.key] = [];
-      for (var i = 0; i < unit.digits; i++) {
-        var digit = document.createElement("div");
-        digit.className = "digit";
-        digit.dataset.value = "0";
-
-        var strip = document.createElement("div");
-        strip.className = "digit-strip";
-        // 0-9 を2周分並べてスピン演出時のループに使う
-        for (var cycle = 0; cycle < 2; cycle++) {
-          for (var n = 0; n <= 9; n++) {
-            var span = document.createElement("span");
-            span.textContent = String(n);
-            strip.appendChild(span);
-          }
-        }
-        digit.appendChild(strip);
-        container.appendChild(digit);
-        digitEls[unit.key].push({ el: digit, strip: strip, value: -1 });
-      }
-    });
-
-    function digitHeight(el) {
-      return el.clientHeight || 60;
-    }
-
-    function setDigitValue(entry, newVal, animate) {
-      if (entry.value === newVal) return;
-      var h = digitHeight(entry.el);
-      var fromVal = entry.value < 0 ? newVal : entry.value;
-      entry.value = newVal;
-
-      if (!animate || prefersReducedMotion || typeof gsap === "undefined") {
-        entry.strip.style.transform = "translateY(-" + newVal * h + "px)";
-        return;
-      }
-
-      // 現在値のベース位置(1周目)から、2周目の目的値までスピンさせてから
-      // 見た目が同じ1周目の位置へ瞬時に戻す(無限にY座標が増え続けるのを防止)
-      gsap.set(entry.strip, { y: -(fromVal * h) });
-      gsap.to(entry.strip, {
-        y: -((10 + newVal) * h),
-        duration: 0.55,
-        ease: "power2.out",
-        onComplete: function () {
-          gsap.set(entry.strip, { y: -(newVal * h) });
-        }
-      });
-    }
-
-    // OPEN日未確定時のHours/Minutes/Secondsループに使う周期(24時間)。
-    // 実際の日付とは無関係で、現在時刻から機械的に算出するだけの飾り。
-    var LOOP_SECONDS = 86400;
-
-    function update(animate) {
-      var days, hours, minutes, seconds;
-
-      if (openDateSet) {
-        var now = Date.now();
-        var diff = Math.max(0, TARGET_DATE - now);
-        var totalSeconds = Math.floor(diff / 1000);
-        days = Math.min(Math.floor(totalSeconds / 86400), 99); // 表示は2桁まで
-        hours = Math.floor((totalSeconds % 86400) / 3600);
-        minutes = Math.floor((totalSeconds % 3600) / 60);
-        seconds = totalSeconds % 60;
-      } else {
-        // 実際のOPEN日とは無関係な24時間ループのダミー残り時間
-        var elapsedInLoop = Math.floor(Date.now() / 1000) % LOOP_SECONDS;
-        var remainingInLoop = LOOP_SECONDS - 1 - elapsedInLoop;
-        hours = Math.floor(remainingInLoop / 3600);
-        minutes = Math.floor((remainingInLoop % 3600) / 60);
-        seconds = remainingInLoop % 60;
-      }
-
-      var values = { days: days, hours: hours, minutes: minutes, seconds: seconds };
-
-      units.forEach(function (unit) {
-        if (unit.key === "days" && !openDateSet) return;
-        var str = String(values[unit.key]).padStart(unit.digits, "0");
-        var entries = digitEls[unit.key];
-        if (!entries) return;
-        for (var i = 0; i < entries.length; i++) {
-          setDigitValue(entries[i], parseInt(str[i], 10), animate);
-        }
-      });
-    }
-
-    // 初期描画はアニメーションなしで一発表示、以降1秒ごとにスロット演出
-    update(false);
-    setTimeout(function () {
-      setInterval(function () { update(true); }, 1000);
-    }, 300);
-
-    // レイアウト確定後に高さを再計算して初期位置を合わせ直す
-    window.addEventListener("resize", function () { update(false); });
-  }
-
-  /* ------------------------------------------------------------------
    * GSAP ScrollTrigger 演出
    * ---------------------------------------------------------------- */
   function initScrollAnimations() {
@@ -464,7 +359,7 @@
 
     if (prefersReducedMotion) return; // CSSで即表示済みのため何もしない
 
-    /* ヒーロー：実写バッジが「どーん」と登場 → ロゴ→コピー→カウントダウン→CTA */
+    /* ヒーロー：実写バッジが「どーん」と登場 → ロゴ→コピー→CTA→OPENバッジ */
     var heroTl = gsap.timeline({ delay: 0.3 });
     var heroPhoto = document.querySelector(".hero-photo-wrap");
 
@@ -484,7 +379,7 @@
     heroTl
       .fromTo('[data-anim="hero-copy"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart)
       .fromTo('[data-anim="hero-cta"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, textStart + 0.15)
-      .fromTo('[data-anim="hero-countdown"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart + 0.3);
+      .fromTo('[data-anim="hero-open-badge"]', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, textStart + 0.3);
 
     /* ヒーロー：背後の光条がスクロールでゆっくり回転 */
     gsap.to(".hero-burst", {
@@ -586,10 +481,10 @@
     initLoader();
     initHeader();
     initFloatingCta();
-    initReservationLinks();
+    initPhoneLinks();
+    initInstagramLinks();
     initLineLinks();
     initLightbox();
-    initCountdown();
     initScrollAnimations();
   });
 })();
